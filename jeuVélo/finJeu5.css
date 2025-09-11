@@ -1,0 +1,75 @@
+body {
+    background-color: #f0f0f0;
+    font-family: 'Fredoka One', sans-serif;
+}
+
+.appcontainer {
+    width: 720px; /* fixed width, you can also use percentage */
+    height: 720px; /* fixed height, adjust as necessary */
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('../images/imageJeu5.jpg') no-repeat center center;
+    position: absolute; /* position it absolutely within the body */
+    left: 50%; /* 50% from the left */
+    top: 50%; /* 50% from the top */
+    transform: translate(-50%, -50%); /* pull back by half its own width and height to center */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    justify-content: center;
+    text-align: center; /* for inline or inline-block elements like text or buttons */
+    display: flex; /* use flexbox */
+    flex-direction: column; /* stack children vertically */
+    justify-content: center; /* center children vertically */
+    align-items: center; /* center children horizontally */
+}
+
+button {
+    width: 250px; /* Prend toute la largeur du conteneur parent .game-leaderboard */
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #005f5f;
+}
+
+/* Styles pour le leaderboard */
+#leaderboardJeu5 {
+    width: 300px; /* Prend toute la largeur du conteneur parent .game-leaderboard */
+    background-color: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
+    color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
+    font-family: 'Courier New', monospace; /* Police classique rétro */
+    padding: 10px;
+    border-radius: 8px; /* Coins arrondis pour un look moderne */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  
+  /* Style pour les entrées du leaderboard */
+  #leaderboardJeu5 p {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px; /* Coins légèrement arrondis pour les entrées */
+  }
+  
+  /* Style spécifique pour le premier joueur */
+  #leaderboardJeu5 p:first-child {
+    background-color: rgba(255, 215, 0, 0.7); /* Fond doré semi-transparent pour le vainqueur */
+    color: #000000; /* Texte noir pour le contraste */
+    font-weight: bold;
+    border: 2px solid #ffd700; /* Bordure dorée pour le vainqueur */
+    margin-bottom: 10px;
+  }
+  
+  /* Style pour la numérotation (Optionnel) */
+  .leaderboard-ranking {
+    font-weight: bold; /* Texte en gras pour la numérotation */
+  }

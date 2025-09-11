@@ -1,0 +1,71 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Empêche le défilement de la page entière */
+    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+}
+
+.app-container {
+    width: 720px; /* Largeur fixe pour le conteneur de jeu */
+    height: 720px; /* Hauteur fixe pour le conteneur de jeu */
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('images/ImageEcranAccueil.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centrer les éléments à l'intérieur du conteneur */
+}
+
+#player-name {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 80%; /* ajuste la largeur de l'input dans le conteneur */
+    max-width: 300px; /* optionnel, pour ne pas devenir trop large sur les grands écrans */
+    border: 2px solid #0088cc; /* Bordure bleue */
+    border-radius: 20px; /* Coins arrondis pour l'input */
+    font-size: 1.2em; /* Texte plus grand dans l'input */
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #22aa22; /* Vert, couleur vive et ludique */
+    border: none; /* Pas de bordure */
+    border-radius: 20px; /* Coins arrondis */
+    color: white; /* Texte en blanc pour contraste */
+    font-size: 1.5em; /* Augmenter la taille de la police */
+    font-weight: bold; /* Rendre le texte en gras */
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner du relief */
+    transition: background-color 0.2s, transform 0.1s; /* Transition pour le survol */
+}
+
+button:hover {
+    background-color: #22cc88; /* Changement de couleur au survol */
+    transform: scale(1.05); /* Légère augmentation de la taille au survol */
+}
+
+#bienvenue {
+    font-family: 'Fredoka One', cursive, sans-serif; /* Police plus ludique et amusante */
+    color: #dd3333; /* Couleur vive */
+    font-size: 2.5em; /* Taille de police plus grande pour le titre */
+    margin-bottom: 30px; /* Plus d'espace sous le titre */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée pour le titre */
+}
+
+.center-button {
+    margin: 0 auto; /* Centrage horizontal du bouton */
+    display: block; /* Pour permettre le centrage avec margin auto */
+}
+
+.centered-element {
+    margin: 10px auto; /* Centrage horizontal avec un peu d'espace */
+    display: block; /* Permet le centrage avec margin auto */
+}

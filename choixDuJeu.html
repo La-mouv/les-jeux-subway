@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choix du Jeu - Les Jeux du Bureau</title>
+    <link rel="stylesheet" href="choixDuJeu.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+       <!-- Ajouter les scripts Firebase -->
+       <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+       <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+       <script>
+           // Configuration Firebase (remplacer par votre propre configuration)
+           const firebaseConfig = {
+     apiKey: "AIzaSyA9Ai6YfO3xmI6L_WxNhleUFQyG1KSVR-o",
+     authDomain: "les-jeux-du-bureau.firebaseapp.com",
+     databaseURL: "https://les-jeux-du-bureau-default-rtdb.europe-west1.firebasedatabase.app", // Ajoutez cette ligne
+     projectId: "les-jeux-du-bureau",
+     storageBucket: "les-jeux-du-bureau.appspot.com",
+     messagingSenderId: "1867742425",
+     appId: "1:1867742425:web:62f0dbc6d68ca23cdf12c8"
+   };
+           // Initialiser Firebase
+           firebase.initializeApp(firebaseConfig);
+       </script>
+</head>
+<body>
+  <div id="playerInfo">
+    Pseudo: <span id="playerNameDisplay">sans pseudo</span>
+</div>
+<div id="chatContainer">
+  <div id="chatBox">
+      <ul id="chatMessages"></ul>
+  </div>
+  <input type="text" id="chatInput" placeholder="Tapez un message..." />
+</div>
+
+    <div class="games-container">
+        <!-- Boutons de navigation -->
+        <button id="left-button" onclick="move(-1)">&#10094;</button> <!-- Flèche gauche -->
+
+        <!-- Conteneur des jeux -->
+        <div id="game-slider">
+          <div class="game-leaderboard">
+            <button onclick="startGame('DessinOlympique/jeu2.html')">1 - Dessin Olympique</button>
+            <div id="leaderboardJeu2"></div>
+          </div>
+          <div class="game-leaderboard">
+            <button onclick="startGame('jeuTyping/jeu1.html')">2 - DactiMarathon</button>
+            <div id="leaderboardJeu1"></div>
+          </div>
+          <div class="game-leaderboard">
+            <button onclick="startGame('jeuClique/jeu3.html')">3 - Cliques-Viiite</button>
+            <div id="leaderboardJeu3"></div>
+          </div>
+          <div class="game-leaderboard">
+            <button onclick="startGame('jeuPoints/jeu4.html')">4 - Où sont ces p...... de points ?</button>
+            <div id="leaderboardJeu4"></div>
+          </div>
+          <div class="game-leaderboard">
+            <button onclick="startGame('jeuVélo/jeu5.html')">5 - Patte de Vélo'urs </button>
+            <div id="leaderboardJeu5"></div>
+          </div>
+          <div class="game-leaderboard">
+            <button onclick="startGame('jeuF1/jeu6.html')">6 - Charles l'éclair </button>
+            <div id="leaderboardJeu6"></div>
+          </div>
+          <div class="game-leaderboard">
+            <button id="hallOfFame" onclick="startGame('hallOfFame/hallOfFame.html')">Hall of Fame </button>
+            <div id="hallOfFame2"></div>
+          </div>
+        </div>
+        <button id="right-button" onclick="move(1)">&#10095;</button>  <!-- Flèche droite -->
+      </div>
+      <button id="resetScoresButton" style="display: none;">Reset</button>
+
+
+
+    <script src="choixDuJeu.js"></script>
+</body>
+</html>

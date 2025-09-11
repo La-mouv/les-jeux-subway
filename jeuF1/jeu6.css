@@ -1,0 +1,118 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+}
+
+#gameContainer {
+    width: 720px;
+    height: 720px;
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('../images/imageJeu6.jpg') no-repeat center center; /* Assurez-vous que le chemin de l'image est correct */
+    background-size: cover;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrer le contenu verticalement */
+    align-items: center;
+    border-radius: 10px;
+    position: relative; /* Nécessaire pour positionner les feux absolument par rapport à ce conteneur */
+}
+
+.start-zone {
+    width: 600px;
+    height: 300px;
+    margin: 20px;
+    background-color: #ddd; /* A remplacer par l'image */
+    border: 1px solid black;
+    z-index: 2; /* S'assure que start-zone se trouve au-dessus des lumières */
+}
+
+#startButton {
+    padding: 15px 30px;
+    cursor: pointer;
+    background-color: #22cc88;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-size: 1.2em;
+    font-weight: bold;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+    z-index: 2; /* S'assure que le bouton se trouve au-dessus des lumières */
+}
+
+#startButton:hover {
+    background-color: #1faa77; /* Changement de couleur au survol */
+    transform: scale(1.05); /* Effet de zoom légèrement au survol */
+}
+
+#startButton:active {
+    border-color: #16a085; /* Couleur de la bordure lors du clic */
+}
+
+.race-start-lights {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1; /* S'assure que les lumières ne couvrent pas les autres éléments */
+}
+
+.light-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.light {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    background-color: black;
+    border-radius: 50%;
+    border: 1px solid #555;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Pour indiquer le feu vert */
+.green {
+    background-color: green;
+}
+
+/* Style pour un feu éteint */
+.light.off {
+    background-color: black; /* Représente un feu éteint */
+    border: 1px solid #555; /* Un contour pour que le feu reste visible même éteint */
+}
+
+/* Style pour un feu allumé en rouge */
+.light.red {
+    background-color: red; /* Représente un feu allumé en rouge */
+    box-shadow: 0 0 20px red; /* Un halo lumineux pour l'effet allumé */
+}
+
+#playerInfo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f9f9f9;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Assurez-vous qu'il reste au-dessus des autres éléments */
+}
+
+#timerDisplay {
+    font-size: 2em;
+    color: #333;
+    margin: 20px 0;
+    /* Ajoutez d'autres styles si nécessaire */
+}

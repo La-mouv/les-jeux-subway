@@ -1,0 +1,66 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Empêche le défilement de la page entière */
+    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+}
+
+
+.app-container {
+    width: 720px; /* Largeur fixe pour le conteneur de jeu */
+    height: 720px; /* Hauteur fixe pour le conteneur de jeu */
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../images/ImageEcranAccueil.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centrer les éléments à l'intérieur du conteneur */
+}
+
+/* Styles pour le leaderboard */
+#table {
+    width: 80%; /* Prend toute la largeur du conteneur parent .game-leaderboard */
+    background-color:rgb(240, 233, 104); /* Fond doré semi-transparent pour le vainqueur */
+    color: #000000; /* Texte blanc pour une meilleure lisibilité */
+    font-family: 'Courier New', monospace; /* Police classique rétro */
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 8px; /* Coins arrondis pour un look moderne */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
+    margin-bottom: 20px;
+    margin-top: 20px;
+    z-index: 1; /* Cela garantit que le leaderboard est en dessous des boutons de navigation */
+    position: relative; /* Ajoutez position relative si nécessaire pour le z-index */
+    border: 2px solid #ffd700; /* Bordure dorée pour le vainqueur */
+  }
+
+  #bienvenue {
+    padding: 10px 20px;
+    background-color: rgb(240, 233, 104); /* Vert, couleur vive et ludique */
+    border: none; /* Pas de bordure */
+    border-radius: 20px; /* Coins arrondis */
+    color: rgb(0, 0, 0); /* Texte en blanc pour contraste */
+    font-size: 1.5em; /* Augmenter la taille de la police */
+    font-weight: bold; /* Rendre le texte en gras */
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #22aa22; /* Vert, couleur vive et ludique */
+    border: none; /* Pas de bordure */
+    border-radius: 20px; /* Coins arrondis */
+    color: white; /* Texte en blanc pour contraste */
+    font-size: 1.5em; /* Augmenter la taille de la police */
+    font-weight: bold; /* Rendre le texte en gras */
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner du relief */
+    transition: background-color 0.2s, transform 0.1s; /* Transition pour le survol */
+}

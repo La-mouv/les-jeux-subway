@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fin du jeu 5</title>
+    <link rel="stylesheet" href="finJeu5.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+           <!-- Ajouter les scripts Firebase -->
+           <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+           <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+           <script>
+               // Configuration Firebase (remplacer par votre propre configuration)
+               const firebaseConfig = {
+         apiKey: "AIzaSyA9Ai6YfO3xmI6L_WxNhleUFQyG1KSVR-o",
+         authDomain: "les-jeux-du-bureau.firebaseapp.com",
+         databaseURL: "https://les-jeux-du-bureau-default-rtdb.europe-west1.firebasedatabase.app", // Ajoutez cette ligne
+         projectId: "les-jeux-du-bureau",
+         storageBucket: "les-jeux-du-bureau.appspot.com",
+         messagingSenderId: "1867742425",
+         appId: "1:1867742425:web:62f0dbc6d68ca23cdf12c8"
+       };
+               // Initialiser Firebase
+               firebase.initializeApp(firebaseConfig);
+           </script>
+    
+</head>
+<body>
+    <div class="appcontainer">
+        <h1>Fin du Jeu</h1>
+        <div id="leaderboardJeu5"></div>
+        <button onclick="restartGame()">Recommencer le jeu</button>
+        <button onclick="returnToGameChoice()">Retour aux jeux</button>
+    </div>
+
+    <script src="finJeu5.js"></script>
+</body>
+</html>

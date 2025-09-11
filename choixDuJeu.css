@@ -1,0 +1,214 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
+    overflow: hidden; /* Empêche le défilement de la page entière */
+    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+}
+
+.games-container {
+    position: relative;
+    overflow: hidden;
+    width: 720px; /* Largeur fixe pour le conteneur de jeu */
+    height: 720px; /* Hauteur fixe pour le conteneur de jeu */
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('images/ImageEcranAccueil.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Centrer les éléments à l'intérieur du conteneur */
+}
+
+#game-slider {
+    flex-grow: 1; /* Permet au slider de remplir l'espace disponible */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrer les éléments à l'intérieur du conteneur */
+    flex-direction: row;
+    justify-content: flex-start; /* Alignez les éléments de gauche à droite */
+    transition: transform 0.5s ease;
+    width: 80%; /* Il prendra toute la largeur du .games-container */
+    margin: 0 auto; /* Centrer dans games-container si nécessaire */
+    /* autres styles... */
+  }
+  
+
+.game-leaderboard {
+    display: flex;
+    flex-direction: column; /* Empilement vertical */
+    align-items: center; /* Centrage vertical */
+    width: 60%; /* Chaque jeu occupe 100% de la largeur du slider */
+    box-sizing: border-box; /* S'assure que padding et border sont inclus dans la largeur */
+    margin: 0; /* Enlever les marges par défaut */
+    max-height: 100%; /* S'assure que les éléments n'excèdent pas la hauteur du conteneur */
+    flex: 0 0 100%; /* Chaque jeu occupe 100% de la largeur du slider */
+    text-align: center;
+  }
+
+#player-name {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 80%; /* ajuste la largeur de l'input dans le conteneur */
+    max-width: 300px; /* optionnel, pour ne pas devenir trop large sur les grands écrans */
+    border: 2px solid #0088cc; /* Bordure bleue */
+    border-radius: 20px; /* Coins arrondis pour l'input */
+    font-size: 1.2em; /* Texte plus grand dans l'input */
+}
+
+#hallOfFame {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: rgb(240, 233, 104); /* Vert, couleur vive et ludique */
+  border: none; /* Pas de bordure */
+  border-radius: 20px; /* Coins arrondis */
+  color: rgb(0, 0, 0); /* Texte en blanc pour contraste */
+  font-size: 1.5em; /* Augmenter la taille de la police */
+  font-weight: bold; /* Rendre le texte en gras */
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner du relief */
+  transition: background-color 0.2s, transform 0.1s; /* Transition pour le survol */
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #22aa22; /* Vert, couleur vive et ludique */
+    border: none; /* Pas de bordure */
+    border-radius: 20px; /* Coins arrondis */
+    color: white; /* Texte en blanc pour contraste */
+    font-size: 1.5em; /* Augmenter la taille de la police */
+    font-weight: bold; /* Rendre le texte en gras */
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner du relief */
+    transition: background-color 0.2s, transform 0.1s; /* Transition pour le survol */
+}
+
+button:hover {
+    background-color: rgb(35, 205, 137);/* Changement de couleur au survol */
+    transform: scale(1.05); /* Légère augmentation de la taille au survol */
+}
+
+/* Styles pour le leaderboard */
+#leaderboardJeu1, #leaderboardJeu2, #leaderboardJeu3, #leaderboardJeu4, #leaderboardJeu5, #leaderboardJeu6 {
+  width: 50%; /* Prend toute la largeur du conteneur parent .game-leaderboard */
+  background-color: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
+  color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
+  font-family: 'Courier New', monospace; /* Police classique rétro */
+  padding: 10px;
+  border-radius: 8px; /* Coins arrondis pour un look moderne */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
+  margin-bottom: 20px;
+  margin-top: 20px;
+  z-index: 1; /* Cela garantit que le leaderboard est en dessous des boutons de navigation */
+  position: relative; /* Ajoutez position relative si nécessaire pour le z-index */
+}
+
+/* Style pour les entrées du leaderboard */
+#leaderboardJeu1 p, #leaderboardJeu2 p, #leaderboardJeu3 p, #leaderboardJeu4 p, #leaderboardJeu5 p, #leaderboardJeu6 p {
+  margin: 5px 0;
+  padding: 5px;
+  border-radius: 4px; /* Coins légèrement arrondis pour les entrées */
+}
+
+/* Style spécifique pour le premier joueur */
+#leaderboardJeu1 p:first-child, #leaderboardJeu2 p:first-child, #leaderboardJeu3 p:first-child, #leaderboardJeu4 p:first-child, #leaderboardJeu5 p:first-child, #leaderboardJeu6 p:first-child {
+  background-color: rgba(255, 215, 0, 0.7); /* Fond doré semi-transparent pour le vainqueur */
+  color: #000000; /* Texte noir pour le contraste */
+  font-weight: bold;
+  border: 2px solid #ffd700; /* Bordure dorée pour le vainqueur */
+  margin-bottom: 10px;
+}
+
+/* Style pour la numérotation (Optionnel) */
+.leaderboard-ranking {
+  font-weight: bold; /* Texte en gras pour la numérotation */
+}
+/* Style pour les boutons de navigation */
+#left-button, #right-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 10;
+  }
+  
+  #left-button:hover, #right-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  #left-button {
+    left: 10px;
+  }
+  
+  #right-button {
+    right: 10px;
+  }
+
+  #playerInfo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f9f9f9; /* Choisissez une couleur de fond appropriée */
+    color: black;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Facultatif : ajoute une ombre pour le distinguer du contenu du jeu */
+    z-index: 1000; /* Assurez-vous qu'il reste au-dessus des autres éléments */
+  }
+
+  #chatContainer {
+    width: 250px;
+    height: 600px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: absolute;
+    bottom: 20px;
+    background-color: white;
+    left: 0;
+    top: 50px;
+}
+
+#chatBox {
+    width: 100%;
+    height: 550px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    color: black; 
+}
+
+#chatMessages {
+    list-style: none;
+    padding: 0;
+    color: black; 
+}
+
+#chatInput {
+    width: 70%;
+    padding: 5px;
+}
+
+.pseudo {
+  color: #22aa22; /* ou toute autre couleur que vous préférez */
+}
+
+#resetScoresButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #f9f9f9; /* Choisissez une couleur de fond appropriée */
+  color: black;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Facultatif : ajoute une ombre pour le distinguer du contenu du jeu */
+  z-index: 1000; /* Assurez-vous qu'il reste au-dessus des autres éléments */
+}

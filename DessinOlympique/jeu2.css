@@ -1,0 +1,65 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+}
+
+#game2container {
+    width: 720px;
+    height: 720px;
+    background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('../images/ImageJeu2.png') no-repeat center center; /* Garde l'image de fond de #game2container */
+    background-size: cover;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Mise à jour de l'ombre pour correspondre à #gameContainer */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; /* Alignement vertical des enfants de flex */
+    align-items: center;
+    border-radius: 10px; /* Coin arrondi comme #gameContainer */
+    margin: auto;
+}
+
+
+canvas {
+    border: 1px solid #000;
+    cursor: crosshair;
+}
+
+#titre {
+    font-family: 'Fredoka One', cursive, sans-serif; /* Police plus ludique et amusante */
+    color: #dd3333; /* Couleur vive */
+    font-size: 2.5em; /* Taille de police plus grande pour le titre */
+    margin-bottom: 30px; /* Plus d'espace sous le titre */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée pour le titre */
+}
+
+#explication {
+    font-family: 'comic sans ms', cursive, sans-serif; /* Police plus ludique et amusante */
+    color: #3347dd; /* Couleur vive */
+    font-size: 1.2em; /* Taille de police plus grande pour le titre */
+    margin-bottom: 30px; /* Plus d'espace sous le titre */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée pour le titre */
+}
+
+#timer {
+    font-size: 24px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;  /* Ajout d'une marge en bas pour l'espacement */
+}
+
+#playerInfo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f9f9f9; /* Choisissez une couleur de fond appropriée */
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Facultatif : ajoute une ombre pour le distinguer du contenu du jeu */
+    z-index: 1000; /* Assurez-vous qu'il reste au-dessus des autres éléments */
+  }
+  
