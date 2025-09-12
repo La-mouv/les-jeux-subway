@@ -168,7 +168,10 @@ function loadHallOfFameInline() {
     container.innerHTML = `
       <div class="hof-inline-card">
         <table class="hof-inline-table">
-          <thead><tr><th>Jeu</th><th>Joueur</th><th>Score</th></tr></thead>
+          <thead>
+            <tr class="hof-title-row"><th colspan="3">Hall of Fame</th></tr>
+            <tr><th>Jeu</th><th>Joueur</th><th>Score</th></tr>
+          </thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
