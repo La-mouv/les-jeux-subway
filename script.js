@@ -47,7 +47,7 @@ function attachFormSubmitEvent() {
                 return;
             }
             if (newPlayer.length > 18) {
-                alert('Le pseudo doit contenir au maximum 20 caractères.');
+                alert('Le pseudo doit contenir au maximum 18 caractères.');
                 return;
             }
             createNewPlayer(newPlayer);
