@@ -17,7 +17,7 @@ playerNameDisplay.textContent = playerName;
   
   function loadLeaderboardForGame(gameRef, leaderboardElementId) {
     const leaderboardElement = document.getElementById(leaderboardElementId);
-    firebase.database().ref('/scores').orderByChild(gameRef).limitToLast(5).on('value', (snapshot) => {
+    firebase.database().ref('/scores').orderByChild(gameRef).limitToLast(10).on('value', (snapshot) => {
       const scores = snapshot.val();
       if (scores) {
         const sortedScores = Object.keys(scores).map(player => ({ player, score: scores[player][gameRef] })).sort((a, b) => b.score - a.score);
@@ -27,7 +27,8 @@ playerNameDisplay.textContent = playerName;
   }
   
   function displayLeaderboard(scores, element) {
-    const leaderboardHtml = scores.map((score, index) => 
+    const top = scores.slice(0, 10);
+    const leaderboardHtml = top.map((score, index) => 
       `<p class="${index === 0 ? 'winner' : 'other'}">${index + 1}. ${score.player} - ${parseFloat(score.score).toFixed(1)}</p>`
     ).join('');
     element.innerHTML = leaderboardHtml;

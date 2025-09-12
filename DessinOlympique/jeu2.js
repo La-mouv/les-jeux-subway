@@ -4,6 +4,10 @@ playerNameDisplay.textContent = playerName;
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
 const timerElement = document.getElementById('timer');  // Elément HTML pour le timer
+// Largeur unique du trait pour le guide et le dessin joueur
+const STROKE_WIDTH = 8;
+// Géométrie du sandwich (utilisée pour dessin + scoring)
+const GUIDE = { left: 80, top: 180, width: 340, height: 130 };
 let drawing = false;
 let drawnPoints = [];  // Tableau pour stocker les points dessinés
 let timeRemaining = 20;  // Temps restant en secondes
@@ -46,7 +50,7 @@ function draw(event) {
     const y = event.clientY - canvas.offsetTop;
     drawnPoints.push({ x, y });  // Stocke les points dessinés
 
-    ctx.lineWidth = 3;
+    ctx.lineWidth = STROKE_WIDTH;
     ctx.lineCap = 'round';
     ctx.strokeStyle = 'orange';
 
@@ -56,50 +60,50 @@ function draw(event) {
     ctx.moveTo(x, y);
 }
 
+function traceGuidePath(g) {
+    const { left, top, width, height } = GUIDE;
+    const right = left + width;
+    const bottom = top + height;
+
+    // Contour du sandwich avec 3 bosses sur le haut, style icône
+    g.beginPath();
+    g.moveTo(left + 26, top + 30);
+    g.quadraticCurveTo(left, top + 30, left, top + 60);
+    g.quadraticCurveTo(left + width * 0.12, top, left + width * 0.25, top + 30);
+    g.quadraticCurveTo(left + width * 0.40, top, left + width * 0.52, top + 30);
+    g.quadraticCurveTo(left + width * 0.68, top, left + width * 0.78, top + 30);
+    g.quadraticCurveTo(right, top + 30, right - 24, top + 52);
+    g.quadraticCurveTo(right, bottom - 34, right - 24, bottom - 18);
+    g.quadraticCurveTo(left + width * 0.5, bottom + 18, left + 24, bottom - 18);
+    g.quadraticCurveTo(left, bottom - 34, left, top + 60);
+    g.quadraticCurveTo(left, top + 30, left + 26, top + 30);
+    g.closePath();
+
+    // Ligne de garniture simple (vague douce, centrée)
+    const waves = 7;
+    const seg = width / waves;
+    const midY = top + height * 0.58;
+    g.moveTo(left + 22, midY);
+    for (let i = 0; i < waves; i++) {
+        const cx = left + 22 + i * seg + seg / 2;
+        const cy = midY + (i % 2 === 0 ? -12 : 12);
+        const x = left + 22 + (i + 1) * seg;
+        g.quadraticCurveTo(cx, cy, x, midY);
+    }
+}
+
 function drawGuides() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 5;
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
 
-    const x = 120;        // position X du sandwich
-    const y = 180;        // position Y du sandwich
-    const width = 280;    // largeur du sandwich
-    const height = 80;    // hauteur du sandwich
-    const breadCurve = 30; // arrondi du pain
-
-    ctx.beginPath();
-
-    // --- Début à gauche, pain du haut ---
-    ctx.moveTo(x, y);
-    ctx.quadraticCurveTo(x + width / 2, y - breadCurve, x + width, y); // arc supérieur
-
-    // --- Descente côté droit ---
-    ctx.quadraticCurveTo(x + width + 10, y + height / 2, x + width, y + height);
-
-    // --- Pain du bas (arc inférieur) ---
-    ctx.quadraticCurveTo(x + width / 2, y + height + breadCurve, x, y + height);
-
-    // --- Remontée côté gauche ---
-    ctx.quadraticCurveTo(x - 10, y + height / 2, x, y);
-
-    // --- Garniture (intérieure) ---
-    const waveCount = 6;
-    const waveWidth = width / waveCount;
-    const waveHeight = 8;
-    ctx.moveTo(x + 20, y + height / 2);
-    for (let i = 0; i < waveCount; i++) {
-        ctx.quadraticCurveTo(
-            x + 20 + i * waveWidth + waveWidth / 2,
-            y + height / 2 + (i % 2 === 0 ? waveHeight : -waveHeight),
-            x + 20 + (i + 1) * waveWidth,
-            y + height / 2
-        );
-    }
-
-    ctx.closePath();
+    // stroke du contour + vague
+    ctx.save();
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = STROKE_WIDTH;
+    traceGuidePath(ctx);
     ctx.stroke();
+    ctx.restore();
 }
 
 
@@ -108,33 +112,96 @@ function drawGuides() {
 drawGuides();
 
 const SEGMENTS_PER_CIRCLE = 100;
-const MAX_DISTANCE = 4;  // distance maximale des points au segment
+// Paramètres scoring plus robustes: couvre + pénalise le hors-piste
+const SCORE_SAMPLE_STEP = 2; // échantillonnage des pixels pour accélérer
+// Rendre le jeu un peu plus exigeant: tolérances plus serrées
+const COVER_TOLERANCE = Math.max(1, Math.floor(STROKE_WIDTH / 3)); // rayon de tolérance pour recouvrement
+const PREC_TOLERANCE = Math.max(1, Math.floor(STROKE_WIDTH / 4));  // rayon pour la précision
+const COVER_WEIGHT = 0.5;  // importance de couvrir le guide
+const PREC_WEIGHT = 0.5;   // importance de ne pas dépasser
+
+function buildGuideMask() {
+    const c = document.createElement('canvas');
+    c.width = canvas.width;
+    c.height = canvas.height;
+    const g = c.getContext('2d');
+    g.lineJoin = 'round';
+    g.lineCap = 'round';
+    g.strokeStyle = '#000';
+    g.lineWidth = STROKE_WIDTH;
+    traceGuidePath(g);
+    g.stroke();
+    return g.getImageData(0, 0, c.width, c.height);
+}
+
+function buildPlayerMask() {
+    const c = document.createElement('canvas');
+    c.width = canvas.width;
+    c.height = canvas.height;
+    const g = c.getContext('2d');
+    g.lineJoin = 'round';
+    g.lineCap = 'round';
+    g.strokeStyle = '#000';
+    g.lineWidth = STROKE_WIDTH;
+    if (drawnPoints.length > 1) {
+        g.beginPath();
+        g.moveTo(drawnPoints[0].x, drawnPoints[0].y);
+        for (let i = 1; i < drawnPoints.length; i++) {
+            g.lineTo(drawnPoints[i].x, drawnPoints[i].y);
+        }
+        g.stroke();
+    }
+    return g.getImageData(0, 0, c.width, c.height);
+}
+
+function alphaAt(img, x, y) {
+    const idx = (y * img.width + x) * 4 + 3;
+    return img.data[idx];
+}
+
+function hasAlphaInRadius(img, x, y, r) {
+    const x0 = Math.max(0, x - r), x1 = Math.min(img.width - 1, x + r);
+    const y0 = Math.max(0, y - r), y1 = Math.min(img.height - 1, y + r);
+    for (let yy = y0; yy <= y1; yy++) {
+        for (let xx = x0; xx <= x1; xx++) {
+            if (alphaAt(img, xx, yy) > 0) return true;
+        }
+    }
+    return false;
+}
 
 function calculateScore() {
-    let matchingSegments = 0;
-    let totalSegments = 0;
-    const sandwichX = 100;
-    const sandwichY = 120;
-    const sandwichWidth = 300;
-    const sandwichHeight = 100;
-    const step = 5; // espacement entre les points de référence
+    const guide = buildGuideMask();
+    const player = buildPlayerMask();
 
-    // Parcourir les 4 côtés du rectangle
-    for (let x = sandwichX; x <= sandwichX + sandwichWidth; x += step) {
-        totalSegments++;
-        if (isPointNearSegment({x, y: sandwichY})) matchingSegments++;
-        totalSegments++;
-        if (isPointNearSegment({x, y: sandwichY + sandwichHeight})) matchingSegments++;
-    }
-    for (let y = sandwichY; y <= sandwichY + sandwichHeight; y += step) {
-        totalSegments++;
-        if (isPointNearSegment({x: sandwichX, y})) matchingSegments++;
-        totalSegments++;
-        if (isPointNearSegment({x: sandwichX + sandwichWidth, y})) matchingSegments++;
+    let guideCount = 0, guideCovered = 0;
+    let playerCount = 0, playerOutside = 0;
+
+    // Couverture du guide
+    for (let y = 0; y < guide.height; y += SCORE_SAMPLE_STEP) {
+        for (let x = 0; x < guide.width; x += SCORE_SAMPLE_STEP) {
+            if (alphaAt(guide, x, y) > 0) {
+                guideCount++;
+                if (hasAlphaInRadius(player, x, y, COVER_TOLERANCE)) guideCovered++;
+            }
+        }
     }
 
-    const score = (matchingSegments / totalSegments) * 50;
-    return score.toFixed(1);
+    // Précision: pénaliser les pixels du joueur loin du guide
+    for (let y = 0; y < player.height; y += SCORE_SAMPLE_STEP) {
+        for (let x = 0; x < player.width; x += SCORE_SAMPLE_STEP) {
+            if (alphaAt(player, x, y) > 0) {
+                playerCount++;
+                if (!hasAlphaInRadius(guide, x, y, PREC_TOLERANCE)) playerOutside++;
+            }
+        }
+    }
+
+    const coverRatio = guideCount ? guideCovered / guideCount : 0;
+    const precisionRatio = playerCount ? 1 - playerOutside / playerCount : 0;
+    const mixed = COVER_WEIGHT * coverRatio + PREC_WEIGHT * precisionRatio;
+    const score = Math.max(0, Math.min(50, 50 * mixed));
+    return Math.round(score * 10) / 10; // retourne un nombre (1 décimale)
 }
 
 
@@ -149,9 +216,14 @@ function gameOver() {
 function updateBestScoreIfNecessary(score) {
     var playerScoreRef = firebase.database().ref('/scores/' + playerName + '/jeu2');
     playerScoreRef.once('value', function(snapshot) {
-        var bestScore = snapshot.val() || 0;
-        if (score > bestScore) {
-            playerScoreRef.set(score, function(error) {
+        var bestRaw = snapshot.val();
+        var bestScore = parseFloat(bestRaw);
+        if (isNaN(bestScore)) bestScore = 0;
+        var newScore = typeof score === 'number' ? score : parseFloat(score);
+        if (isNaN(newScore)) newScore = 0;
+
+        if (newScore > bestScore) {
+            playerScoreRef.set(newScore, function(error) {
                 if (error) {
                     alert('Une erreur est survenue lors de la mise à jour du score.');
                 } else {

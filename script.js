@@ -46,6 +46,10 @@ function attachFormSubmitEvent() {
                 alert('Veuillez entrer un nouveau pseudo.');
                 return;
             }
+            if (newPlayer.length > 20) {
+                alert('Le pseudo doit contenir au maximum 20 caractères.');
+                return;
+            }
             createNewPlayer(newPlayer);
         } else {
             if (!selectedPlayer) {
@@ -66,6 +70,10 @@ function toggleNewPlayerInput(selectElement) {
 function createNewPlayer(pseudo) {
     var database = firebase.database();
     var pseudosRef = database.ref('scores');
+    if (pseudo.length > 20) {
+        alert('Le pseudo doit contenir au maximum 20 caractères.');
+        return;
+    }
 
     // Vérifiez d'abord si le pseudo existe déjà.
     pseudosRef.child(pseudo).once('value', function(snapshot) {
