@@ -6,46 +6,39 @@
     <title>Hall Of Fame</title>
     <link rel="stylesheet" href="hallOfFame.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <!-- Firebase (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script>
+        // Utilise la même configuration que les autres pages
+        const firebaseConfig = {
+          apiKey: "AIzaSyCJ1HWyWcI6fGeZ19GQjjML_dgI1HMo4MA",
+          authDomain: "les-jeux-subway.firebaseapp.com",
+          databaseURL: "https://les-jeux-subway-default-rtdb.europe-west1.firebasedatabase.app",
+          projectId: "les-jeux-subway",
+          storageBucket: "les-jeux-subway.firebasestorage.app",
+          messagingSenderId: "489426965676",
+          appId: "1:489426965676:web:92596860ec5950bf6ffb09"
+        };
+        if (!window.firebase || !firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+    </script>
 </head>
 <body>
     <div class="app-container">
         <h1 id="bienvenue">Hall Of Fame</h1>
         <table id="table" border="1">
-            <tr>
-                <th>Jeux</th>
-                <th>Joueurs</th>
-                <th>Score</th>
-            </tr>
-            <tr>
-                <td>1 - Dessin Olympique</td>
-                <td>Hélo et TO</td>
-                <td>50</td>
-            </tr>
-            <tr>
-                <td>2 - DactiMarathon</td>
-                <td>Marine</td>
-                <td>53.1</td>
-            </tr>
-            <tr>
-                <td>3 - Cliques-Viiite</td>
-                <td>Alexis</td>
-                <td>113</td>
-            </tr>
-            <tr>
-                <td>4 - Où sont ces putains de points</td>
-                <td>Hélo</td>
-                <td>36.1</td>
-            </tr>
-            <tr>
-                <td>5 - Patte de Vélo'urs</td>
-                <td>TO</td>
-                <td>72</td>
-            </tr>
-            <tr>
-                <td>6 - Charles l'éclair</td>
-                <td>Hélo</td>
-                <td>98.1</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Jeux</th>
+                    <th>Joueur</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="hof-body">
+                <!-- Rempli dynamiquement -->
+            </tbody>
         </table>
 
         <button onclick="returnToGameChoice()">Retour vers le choix du jeu </button>
