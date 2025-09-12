@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const playerName = sessionStorage.getItem('playerName') || 'Sans pseudo';
     playerNameDisplay.textContent = playerName;
     const allWords = [
-        "course", "natation", "saut", "plus vite", "boxe", "vélo", "gym", "relais", "plongée", "tir à l'arc", "basket", "sdc vs vop", "lutte", "élancourt", "trocadéro", "surf", "triathlon", "taekwondo", "escalade", "tennis", "skate", "sprint", "épée", "bolt", "tir", "rugby", "volley", "javelot", "saut en longueur", "saut à la perche", "slalom", "marathon", "golf", "ping-ping", "trampoline", "boccia", "karaté", "goalball", "badminton", "basketball", "canotage", "cérémonie", "cyclisme", "p24", "relais", "planche à voile" ];    
+        "Teriyaki", "Tikka", "Thon", "BMT", "Brooklyn", "Chipotle", "Southwest", "Meatball", "Sandwich", "Artists", "Footlong", "Fresh", "Cookies Lovers", "Six-inch", "Veggie", "Bacon", "Ranch", "Sweet Onion", "Parmesan", "Jalapen", "Tomates", "Brownie", "BBQ", "1965", "Connecticut", "Peter Buck", "Fred", "Subway", "Fred DeLuca", "Sub Like Me", "Steak & Cheese", "Pastrami", "Bridgeport", "sous-marin", "Pete's Super Submarine", "Convention 2025", "Puy du Fou", "GP Explorer" ];    
     let words = [];
     let currentWordIndex = 0;
     let score = 0;

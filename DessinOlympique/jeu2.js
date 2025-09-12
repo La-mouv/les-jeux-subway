@@ -57,24 +57,51 @@ function draw(event) {
 }
 
 function drawGuides() {
-    const radii = [50, 50, 50, 50, 50];  // Rayons des cercles
-    const centers = [  // Coordonnées des centres des cercles
-        {x: 150, y: 150},
-        {x: 250, y: 150},
-        {x: 350, y: 150},
-        {x: 200, y: 200},
-        {x: 300, y: 200}
-    ];
-    const colors = ['#0000ff', '#000000', '#ff0000', '#ffff00', '#008000'];  // Couleurs des anneaux olympiques
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 5;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
 
-    for (let i = 0; i < 5; i++) {
-        ctx.strokeStyle = colors[i];  // Définir la couleur du trait pour chaque cercle
-        ctx.lineWidth = 5;  // Augmenter la largeur du trait pour une meilleure visibilité
-        ctx.beginPath();
-        ctx.arc(centers[i].x, centers[i].y, radii[i], 0, Math.PI * 2);
-        ctx.stroke();
+    const x = 120;        // position X du sandwich
+    const y = 180;        // position Y du sandwich
+    const width = 280;    // largeur du sandwich
+    const height = 80;    // hauteur du sandwich
+    const breadCurve = 30; // arrondi du pain
+
+    ctx.beginPath();
+
+    // --- Début à gauche, pain du haut ---
+    ctx.moveTo(x, y);
+    ctx.quadraticCurveTo(x + width / 2, y - breadCurve, x + width, y); // arc supérieur
+
+    // --- Descente côté droit ---
+    ctx.quadraticCurveTo(x + width + 10, y + height / 2, x + width, y + height);
+
+    // --- Pain du bas (arc inférieur) ---
+    ctx.quadraticCurveTo(x + width / 2, y + height + breadCurve, x, y + height);
+
+    // --- Remontée côté gauche ---
+    ctx.quadraticCurveTo(x - 10, y + height / 2, x, y);
+
+    // --- Garniture (intérieure) ---
+    const waveCount = 6;
+    const waveWidth = width / waveCount;
+    const waveHeight = 8;
+    ctx.moveTo(x + 20, y + height / 2);
+    for (let i = 0; i < waveCount; i++) {
+        ctx.quadraticCurveTo(
+            x + 20 + i * waveWidth + waveWidth / 2,
+            y + height / 2 + (i % 2 === 0 ? waveHeight : -waveHeight),
+            x + 20 + (i + 1) * waveWidth,
+            y + height / 2
+        );
     }
+
+    ctx.closePath();
+    ctx.stroke();
 }
+
 
 
 // Appeler la fonction drawGuides au démarrage
@@ -86,32 +113,30 @@ const MAX_DISTANCE = 4;  // distance maximale des points au segment
 function calculateScore() {
     let matchingSegments = 0;
     let totalSegments = 0;
+    const sandwichX = 100;
+    const sandwichY = 120;
+    const sandwichWidth = 300;
+    const sandwichHeight = 100;
+    const step = 5; // espacement entre les points de référence
 
-    const radii = [50, 50, 50, 50, 50];
-    const centers = [
-        {x: 150, y: 150},
-        {x: 250, y: 150},
-        {x: 350, y: 150},
-        {x: 200, y: 200},
-        {x: 300, y: 200}
-    ];
-
-    for (let i = 0; i < 5; i++) {
-        for (let j = 0; j < SEGMENTS_PER_CIRCLE; j++) {
-            const angle = (j / SEGMENTS_PER_CIRCLE) * (Math.PI * 2);
-            const segmentX = centers[i].x + radii[i] * Math.cos(angle);
-            const segmentY = centers[i].y + radii[i] * Math.sin(angle);
-            totalSegments++;
-
-            if (isPointNearSegment({ x: segmentX, y: segmentY })) {
-                matchingSegments++;
-            }
-        }
+    // Parcourir les 4 côtés du rectangle
+    for (let x = sandwichX; x <= sandwichX + sandwichWidth; x += step) {
+        totalSegments++;
+        if (isPointNearSegment({x, y: sandwichY})) matchingSegments++;
+        totalSegments++;
+        if (isPointNearSegment({x, y: sandwichY + sandwichHeight})) matchingSegments++;
+    }
+    for (let y = sandwichY; y <= sandwichY + sandwichHeight; y += step) {
+        totalSegments++;
+        if (isPointNearSegment({x: sandwichX, y})) matchingSegments++;
+        totalSegments++;
+        if (isPointNearSegment({x: sandwichX + sandwichWidth, y})) matchingSegments++;
     }
 
     const score = (matchingSegments / totalSegments) * 50;
-    return score.toFixed(1); // Retourner le score calculé
+    return score.toFixed(1);
 }
+
 
 function gameOver() {
     const score = calculateScore(); // Calcule le score

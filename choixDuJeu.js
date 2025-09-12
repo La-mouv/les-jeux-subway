@@ -108,7 +108,7 @@ document.getElementById('resetScoresButton').addEventListener('click', function(
   
   if (playerName === 'Alexis') {
       const password = prompt('Veuillez entrer le mot de passe pour réinitialiser les scores:');
-      if (password === 'sdcmf') {  // Remplacez 'VotreMotDePasse' par le mot de passe réel
+      if (password === 'yoyoyoyo') {  // Remplacez 'VotreMotDePasse' par le mot de passe réel
           if (confirm('Êtes-vous sûr de vouloir réinitialiser tous les scores ?')) {
               resetAllScores();
           }
