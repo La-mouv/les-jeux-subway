@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const games = [
-    { key: 'jeu2', label: "1 - SUB'Dessin" },
-    { key: 'jeu1', label: "2 - Dacty'SUB" },
-    { key: 'jeu3', label: "3 - SUB'Click" },
-    { key: 'jeu4', label: "4 - Memory'SUB" },
-    { key: 'jeu5', label: "5 - SUB'Collect" },
-    { key: 'jeu6', label: "6 - SUB l'éclair" }
+    { key: 'jeu2', label: "SUB'Dessin" },
+    { key: 'jeu1', label: "Dacty'SUB" },
+    { key: 'jeu3', label: "SUB'Click" },
+    { key: 'jeu4', label: "Memory'SUB" },
+    { key: 'jeu5', label: "SUB'Collect" },
+    { key: 'jeu6', label: "SUB l'éclair" }
   ];
 
   const tbody = document.getElementById('hof-body');

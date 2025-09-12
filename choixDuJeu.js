@@ -36,6 +36,7 @@ playerNameDisplay.textContent = playerName;
 
   // Appeler cette fonction au chargement de la page
   loadLeaderboards();
+  loadHallOfFameInline();
   
   function startGame(gamePage) {
     window.location.href = gamePage;
@@ -73,7 +74,7 @@ chatInput.addEventListener('keypress', (e) => {
 });
 
 // Écouter les messages
-messagesRef.on('child_added', (data) => {
+  messagesRef.on('child_added', (data) => {
   const message = data.val();
   const messageElement = document.createElement('li');
   // Créez un span pour le pseudo et appliquez la classe "pseudo"
@@ -144,3 +145,51 @@ function resetAllScores() {
       }
   });
 }
+
+// Hall of Fame inline (fin du slider, sans clic)
+function loadHallOfFameInline() {
+  const container = document.getElementById('hallOfFame2');
+  if (!container) return;
+
+  const games = [
+    { key: 'jeu2', label: "SUB'Dessin" },
+    { key: 'jeu1', label: "Dacty'SUB" },
+    { key: 'jeu3', label: "SUB'Click" },
+    { key: 'jeu4', label: "Memory'SUB" },
+    { key: 'jeu5', label: "SUB'Collect" },
+    { key: 'jeu6', label: "SUB l'éclair" }
+  ];
+
+  const render = (all) => {
+    const rows = games.map(({ key, label }) => {
+      const best = bestForGame(all, key);
+      return `<tr><td>${label}</td><td>${best.player}</td><td>${formatScore(best.score)}</td></tr>`;
+    }).join('');
+    container.innerHTML = `
+      <table class="hof-inline-table" style="width:100%; background: rgba(255,255,255,0.85); border-radius:8px; border:2px solid #ffd700;">
+        <thead><tr><th>Jeu</th><th>Joueur</th><th>Score</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  };
+
+  firebase.database().ref('/scores').on('value', (snapshot) => {
+    render(snapshot.val() || {});
+  });
+}
+
+function bestForGame(allScores, gameKey) {
+  let bestPlayer = '-';
+  let bestScore = 0;
+  for (const [player, scores] of Object.entries(allScores || {})) {
+    const raw = scores && scores[gameKey];
+    const val = typeof raw === 'number' ? raw : parseFloat(raw) || 0;
+    if (val > bestScore) {
+      bestScore = val;
+      bestPlayer = player;
+    }
+  }
+  return { player: bestPlayer, score: bestScore };
+}
+
+function formatScore(s) { return Number(s).toFixed(1); }
