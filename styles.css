@@ -24,6 +24,7 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative; /* pour positionner le titre en haut */
 }
 
 #player-name {
@@ -59,9 +60,14 @@ button:hover {
 #bienvenue {
     font-family: 'Fredoka One', cursive, sans-serif;
     color: #009943; /* Vert Subway pour le titre */
-    font-size: 2.5em;
+    font-size: 3em; /* légèrement réduit pour tenir sur une ligne */
     margin-bottom: 30px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: 12px; /* plus haut */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap; /* empêcher le retour à la ligne */
 }
 
 .center-button {
@@ -72,4 +78,24 @@ button:hover {
 .centered-element {
     margin: 10px auto;
     display: block;
+}
+
+/* Bouton plus petit pour la création de pseudo */
+#create-pseudo-btn {
+    font-size: 1em;
+    padding: 6px 12px;
+    border-radius: 12px;
+    margin-bottom: 18px; /* espace avant le bouton Commencer */
+}
+
+/* Select des pseudos plus grand et lisible */
+#existing-players {
+    width: 100%;
+    max-width: none;
+    padding: 10px 14px;
+    font-size: 1.2em;
+    border: 2px solid #009943; /* Vert Subway */
+    border-radius: 12px;
+    background-color: #ffffff;
+    box-sizing: border-box;
 }

@@ -47,6 +47,8 @@ function updateTimer() {
 function endGame() {
     isGameRunning = false;
     alert(`Jeu terminé ! Votre score est : ${score}`);
+    // Stats: cumul des clics
+    try { if (window.SUBStats) window.SUBStats.addClicks(playerName, score); } catch(e) {}
     // Ajoutez ici la logique pour enregistrer le score dans Firebase si nécessaire
             // Ajoutez ici la logique pour vérifier et mettre à jour le meilleur score
             updateBestScoreIfNecessary();

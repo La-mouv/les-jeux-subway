@@ -1,3 +1,5 @@
+let creationMode = false; // mode création indépendant de la liste
+
 document.addEventListener('DOMContentLoaded', function() {
     if (!window.firebase || !firebase.apps.length) {
         console.error('Firebase n\'a pas été initialisé - vérifiez votre configuration.');
@@ -6,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
     loadPseudos();
     attachFormSubmitEvent();
+    attachCreatePseudoButton();
 });
 
 
@@ -22,11 +25,6 @@ function loadPseudos() {
             existingPlayersSelect.appendChild(option);
         });
 
-        // Ajouter une option pour créer un nouveau pseudo
-        var newOption = document.createElement('option');
-        newOption.value = 'new';
-        newOption.textContent = 'Créer un nouveau pseudo';
-        existingPlayersSelect.appendChild(newOption);
         existingPlayersSelect.style.display = 'block';
     });
 }
@@ -40,20 +38,19 @@ function attachFormSubmitEvent() {
         var selectedPlayer = existingPlayersSelect.value;
         var newPlayer = newPlayerInput.value.trim();
 
-        if (selectedPlayer === 'new') {
-            toggleNewPlayerInput(existingPlayersSelect);
+        if (creationMode) {
             if (!newPlayer) {
                 alert('Veuillez entrer un nouveau pseudo.');
                 return;
             }
-            if (newPlayer.length > 18) {
-                alert('Le pseudo doit contenir au maximum 18 caractères.');
+            if (newPlayer.length > 20) {
+                alert('Le pseudo doit contenir au maximum 20 caractères.');
                 return;
             }
             createNewPlayer(newPlayer);
         } else {
             if (!selectedPlayer) {
-                alert('Veuillez sélectionner un pseudo.');
+                alert('Veuillez sélectionner un pseudo ou créer un nouveau pseudo.');
                 return;
             }
             sessionStorage.setItem('playerName', selectedPlayer);
@@ -62,9 +59,21 @@ function attachFormSubmitEvent() {
     });
 }
 
-function toggleNewPlayerInput(selectElement) {
+function setCreationMode(on) {
+    creationMode = !!on;
     var newPlayerInput = document.getElementById('new-player');
-    newPlayerInput.style.display = selectElement.value === 'new' ? 'block' : 'none';
+    newPlayerInput.style.display = creationMode ? 'block' : 'none';
+    var select = document.getElementById('existing-players');
+    if (select) select.style.display = creationMode ? 'none' : 'block';
+    if (creationMode) newPlayerInput.focus();
+}
+
+function attachCreatePseudoButton() {
+    var btn = document.getElementById('create-pseudo-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+        setCreationMode(true);
+    });
 }
 
 function createNewPlayer(pseudo) {

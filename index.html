@@ -28,11 +28,11 @@
     <div class="app-container">
         <h1 id="bienvenue">Les Jeux du Bureau</h1>
         <form id="start-form">
-            <select id="existing-players" class="centered-element" onchange="toggleNewPlayerInput(this)">
+            <select id="existing-players" class="centered-element">
                 <option value="">Choisissez un pseudo ou créez-en un nouveau</option>
                 <!-- Les options seront générées par JavaScript -->
-                <option value="new">Créer un nouveau pseudo</option>
             </select>
+            <button type="button" id="create-pseudo-btn" class="center-button">Créer un nouveau pseudo</button>
             <input type="text" id="new-player" placeholder="Entrez un nouveau pseudo (max 20)" maxlength="20" class="centered-element" style="display: none;"/>
             <button type="submit" class="center-button">Commencer</button>
         </form>

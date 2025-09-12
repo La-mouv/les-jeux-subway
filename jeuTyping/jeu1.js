@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let currentWordIndex = 0;
     let score = 0;
     let gameStarted = false;
+    let keypressCount = 0; // SUB'Stats: total frappes clavier
     let timer;
     let timeLeft = 500; // Ajoutez cette variable globalement si elle n'est pas déjà présente
 
@@ -78,6 +79,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     
         // Ajoutez ici la logique pour vérifier et mettre à jour le meilleur score
         updateBestScoreIfNecessary();
+        // Stats: cumul des frappes clavier
+        try { if (window.SUBStats) window.SUBStats.addKeypress(playerName, keypressCount); } catch(e) {}
     
         // La redirection vers la page de fin de jeu sera faite après la mise à jour du score
     }
@@ -112,6 +115,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     function startGame() {
         if (!gameStarted) {
             gameStarted = true;
+            keypressCount = 0;
             words = selectRandomWords(allWords, 10); // Choix de 10 mots aléatoires
             currentWordIndex = 0;
             score = 0;
@@ -127,6 +131,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (event.key === 'Enter' && !gameStarted) {
             startGame();
         }
+        if (gameStarted) { keypressCount++; }
     });
 
     typingInput.addEventListener('input', function() {
@@ -140,4 +145,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Désactiver le champ de saisie au début
     typingInput.disabled = true;
 });
-
