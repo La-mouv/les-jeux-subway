@@ -45,13 +45,50 @@ body, html {
     display: flex;
     flex-direction: column; /* Empilement vertical */
     align-items: center; /* Centrage vertical */
-    width: 60%; /* Chaque jeu occupe 100% de la largeur du slider */
+    width: 60%; /* Chaque jeu occupe 60% de la largeur du slider */
     box-sizing: border-box; /* S'assure que padding et border sont inclus dans la largeur */
     margin: 0; /* Enlever les marges par défaut */
     max-height: 100%; /* S'assure que les éléments n'excèdent pas la hauteur du conteneur */
     flex: 0 0 100%; /* Chaque jeu occupe 100% de la largeur du slider */
     text-align: center;
   }
+
+/* Hall of Fame slide larger */
+.game-leaderboard.hof { width: 85%; }
+
+#hallOfFame { /* Title pill above inline table */
+  padding: 14px 28px;
+  font-size: 2em;
+  border: 3px solid #ffd700;
+}
+
+/* Inline Hall of Fame styles */
+#hallOfFame2 { width: 100%; display: flex; justify-content: center; }
+.hof-inline-card { 
+  width: 95%;
+  max-width: 620px;
+  background: rgba(255,255,255,0.94);
+  color: #111;
+  border: 3px solid #ffd700;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  padding: 16px 18px;
+}
+.hof-inline-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.hof-inline-table thead th {
+  background: #ffd700;
+  color: #111;
+  font-weight: 800;
+  font-size: 1.3em;
+  padding: 12px 10px;
+}
+.hof-inline-table tbody td {
+  padding: 12px 10px;
+  font-size: 1.2em;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+.hof-inline-table tbody tr:first-child td { border-top: none; }
 
 #player-name {
     margin-bottom: 10px;

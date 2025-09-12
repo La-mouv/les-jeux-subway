@@ -27,29 +27,42 @@ body, html {
 
 /* Styles pour le leaderboard */
 #table {
-    width: 80%; /* Prend toute la largeur du conteneur parent .game-leaderboard */
-    background-color:rgb(240, 233, 104); /* Fond doré semi-transparent pour le vainqueur */
-    color: #000000; /* Texte blanc pour une meilleure lisibilité */
-    font-family: 'Courier New', monospace; /* Police classique rétro */
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 8px; /* Coins arrondis pour un look moderne */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
-    margin-bottom: 20px;
-    margin-top: 20px;
-    z-index: 1; /* Cela garantit que le leaderboard est en dessous des boutons de navigation */
-    position: relative; /* Ajoutez position relative si nécessaire pour le z-index */
-    border: 2px solid #ffd700; /* Bordure dorée pour le vainqueur */
-  }
+    width: 90%;
+    background: rgba(255,255,255,0.94);
+    color: #111;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    margin-bottom: 24px;
+    margin-top: 24px;
+    z-index: 1;
+    position: relative;
+    border: 3px solid #ffd700;
+    border-collapse: separate;
+}
+
+#table th {
+    background: #ffd700;
+    color: #111;
+    font-size: 1.4em;
+    padding: 14px 12px;
+}
+
+#table td {
+    font-size: 1.3em;
+    padding: 12px 12px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+}
 
   #bienvenue {
-    padding: 10px 20px;
-    background-color: rgb(240, 233, 104); /* Vert, couleur vive et ludique */
-    border: none; /* Pas de bordure */
-    border-radius: 20px; /* Coins arrondis */
-    color: rgb(0, 0, 0); /* Texte en blanc pour contraste */
-    font-size: 1.5em; /* Augmenter la taille de la police */
-    font-weight: bold; /* Rendre le texte en gras */
+    padding: 14px 28px;
+    background-color: rgb(240, 233, 104);
+    border: 3px solid #ffd700;
+    border-radius: 20px;
+    color: rgb(0, 0, 0);
+    font-size: 2em;
+    font-weight: bold;
 }
 
 button {

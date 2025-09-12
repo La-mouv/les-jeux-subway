@@ -166,10 +166,12 @@ function loadHallOfFameInline() {
       return `<tr><td>${label}</td><td>${best.player}</td><td>${formatScore(best.score)}</td></tr>`;
     }).join('');
     container.innerHTML = `
-      <table class="hof-inline-table" style="width:100%; background: rgba(255,255,255,0.85); border-radius:8px; border:2px solid #ffd700;">
-        <thead><tr><th>Jeu</th><th>Joueur</th><th>Score</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
+      <div class="hof-inline-card">
+        <table class="hof-inline-table">
+          <thead><tr><th>Jeu</th><th>Joueur</th><th>Score</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
     `;
   };
 
