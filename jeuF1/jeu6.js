@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         // Affichez le score ou le message de fin de jeu ici, par exemple :
+        try { if (window.SUBStats) window.SUBStats.addClicks(playerName, 1); } catch(e) {}
         alert(`Votre score est : ${score}`);
         gameStarted = false; // Réinitialise l'état du jeu
 
@@ -99,24 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateBestScoreIfNecessary(currentScore) {
-        var playerScoreRef = firebase.database().ref('/scores/' + playerName + '/jeu6');
-        playerScoreRef.once('value', function(snapshot) {
-            var bestScore = snapshot.val() || 0;
-            if (currentScore > bestScore) {
-                playerScoreRef.set(currentScore, function(error) {
-                    if (error) {
-                        alert('Une erreur est survenue lors de la mise à jour du score.');
-                    } else {
-                        alert('Nouveau meilleur score enregistré !');
-                    }
-                    // Maintenant que nous avons terminé, redirigez vers la page de fin du jeu
-                    redirectToGameOverPage();
-                });
-            } else {
-                // Pas de nouveau meilleur score, redirigez simplement
-                redirectToGameOverPage();
-            }
-        });
+        try {
+            if (!window.ScoreUtil) { redirectToGameOverPage(); return; }
+            window.ScoreUtil.setMaxScore(playerName, 'jeu6', currentScore)
+              .then(({updated}) => { if (updated) alert('Nouveau meilleur score enregistré !'); })
+              .finally(() => { redirectToGameOverPage(); });
+        } catch(_) { redirectToGameOverPage(); }
     }
     
     function redirectToGameOverPage() {       

@@ -55,24 +55,12 @@ function endGame() {
 }
 
 function updateBestScoreIfNecessary() {
-    var playerScoreRef = firebase.database().ref('/scores/' + playerName + '/jeu3');
-    playerScoreRef.once('value', function(snapshot) {
-        var bestScore = snapshot.val() || 0;
-        if (score > bestScore) {
-            playerScoreRef.set(score, function(error) {
-                if (error) {
-                    alert('Une erreur est survenue lors de la mise à jour du score.');
-                } else {
-                    alert('Nouveau meilleur score enregistré !');
-                }
-                // Maintenant que nous avons terminé, redirigez vers la page de fin du jeu
-                redirectToGameOverPage();
-            });
-        } else {
-            // Pas de nouveau meilleur score, redirigez simplement
-            redirectToGameOverPage();
-        }
-    });
+    try {
+        if (!window.ScoreUtil) { redirectToGameOverPage(); return; }
+        window.ScoreUtil.setMaxScore(playerName, 'jeu3', score)
+          .then(({updated}) => { if (updated) alert('Nouveau meilleur score enregistré !'); })
+          .finally(() => { redirectToGameOverPage(); });
+    } catch(_) { redirectToGameOverPage(); }
 }
 
 function redirectToGameOverPage() {

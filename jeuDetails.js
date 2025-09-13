@@ -2,16 +2,9 @@
   const params = new URLSearchParams(location.search);
   const key = params.get('game');
 
-  const GAMES = {
-    jeu5: { title:"SUB'Collect", desc:"Cliquez sur les SUB et évitez les pièges pendant 20 s.", page:'jeuVélo/jeu5.html', bg:'images/imageJeu5.jpg' },
-    jeu1: { title:"Dacty'SUB", desc:"Tapez les mots à toute vitesse : rapidité = points.", page:'jeuTyping/jeu1.html', bg:'images/ImageJeu1.png' },
-    jeu3: { title:"SUB'Click", desc:"Cliquez le carré vert un maximum de fois en 10 s.", page:'jeuClique/jeu3.html', bg:'images/imageJeu3.jpg' },
-    jeu4: { title:"Memory'SUB", desc:"Mémorisez et retrouvez les cookies cachés : précision = points.", page:'jeuPoints/jeu4.html', bg:'images/imageJeu4.jpg' },
-    jeu6: { title:"SUB l'éclair", desc:"Cliquez pour préparer la commande dès que les feux s'éteignent. Réactivité = points.", page:'jeuF1/jeu6.html', bg:'images/imageJeu6.jpg' },
-    jeu2: { title:"SUB'Dessin", desc:"Dessinez le SUB d'un seul trait. Précision = points.", page:'DessinOlympique/jeu2.html', bg:'images/ImageJeu2.png' }
-  };
-
-  const meta = GAMES[key] || GAMES.jeu1;
+  const GAMES_BY_KEY = (window.GAMES_BY_KEY || {});
+  const first = (Array.isArray(window.GAMES) && window.GAMES.length > 0) ? window.GAMES[0] : null;
+  const meta = GAMES_BY_KEY[key] || GAMES_BY_KEY['jeu1'] || first || { title:'', desc:'', page:'#', bg:'' };
   document.getElementById('game-title').textContent = meta.title;
   document.getElementById('game-desc').textContent = meta.desc;
   // Hero image removed per design; keep page clean.

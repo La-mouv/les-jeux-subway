@@ -297,13 +297,4 @@ button:hover {
 
 .pseudo { color: var(--subway-green); }
 
-#resetScoresButton {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #f9f9f9; /* Choisissez une couleur de fond appropriée */
-  color: black;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Facultatif : ajoute une ombre pour le distinguer du contenu du jeu */
-  z-index: 1000; /* Assurez-vous qu'il reste au-dessus des autres éléments */
-}
+/* Styles pour #resetScoresButton supprimés (feature retirée) */

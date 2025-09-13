@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerName = sessionStorage.getItem('playerName') || 'Sans pseudo';
     playerNameDisplay.textContent = playerName;
     let interval; // Pour stocker l'identifiant de l'intervalle du timer
+    let clickCount = 0; // SUB'Stats: clics agrégés pendant la partie
     
 
 
@@ -115,6 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function placePoint(e) {
         if (placedPoints.length >= numberOfPoints) return;
+        clickCount++;
         let rect = canvas.getBoundingClientRect();
         let x = e.clientX - rect.left;
         let y = e.clientY - rect.top;
@@ -182,36 +184,24 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(interval); // Arrête le timer
         canvas.removeEventListener('click', placePoint);
         let score = calculateScore();
+        try { if (window.SUBStats) window.SUBStats.addClicks(playerName, clickCount); } catch(e) {}
         alert(`Jeu terminé! Votre score est : ${score}`);
         gameStarted = false;
 
         
         // Ajoutez ici la logique pour vérifier et mettre à jour le meilleur score
-        updateBestScoreIfNecessary();
+        updateBestScoreIfNecessary(score);
     
         // La redirection vers la page de fin de jeu sera faite après la mise à jour du score
     }
 
-    function updateBestScoreIfNecessary() {
-        var playerScoreRef = firebase.database().ref('/scores/' + playerName + '/jeu4');
-        playerScoreRef.once('value', function(snapshot) {
-            var bestScore = snapshot.val() || 0;
-            let score = calculateScore();
-            if (score > bestScore) {
-                playerScoreRef.set(score, function(error) {
-                    if (error) {
-                        alert('Une erreur est survenue lors de la mise à jour du score.');
-                    } else {
-                        alert('Nouveau meilleur score enregistré !');
-                    }
-                    // Maintenant que nous avons terminé, redirigez vers la page de fin du jeu
-                    redirectToGameOverPage();
-                });
-            } else {
-                // Pas de nouveau meilleur score, redirigez simplement
-                redirectToGameOverPage();
-            }
-        });
+    function updateBestScoreIfNecessary(currentScore) {
+        try {
+            if (!window.ScoreUtil) { redirectToGameOverPage(); return; }
+            window.ScoreUtil.setMaxScore(playerName, 'jeu4', currentScore)
+              .then(({updated}) => { if (updated) alert('Nouveau meilleur score enregistré !'); })
+              .finally(() => { redirectToGameOverPage(); });
+        } catch(_) { redirectToGameOverPage(); }
     }
     
     function redirectToGameOverPage() {       

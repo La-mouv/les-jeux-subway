@@ -7,23 +7,10 @@
     <link rel="stylesheet" href="../theme.css">
     <link rel="stylesheet" href="finJeu2.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
-           <!-- Ajouter les scripts Firebase -->
+           <!-- Firebase (compat) + init centralisée -->
            <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
            <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-           <script>
-               // Configuration Firebase (remplacer par votre propre configuration)
-               const firebaseConfig = {
-  apiKey: "AIzaSyCJ1HWyWcI6fGeZ19GQjjML_dgI1HMo4MA",
-  authDomain: "les-jeux-subway.firebaseapp.com",
-  databaseURL: "https://les-jeux-subway-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "les-jeux-subway",
-  storageBucket: "les-jeux-subway.firebasestorage.app",
-  messagingSenderId: "489426965676",
-  appId: "1:489426965676:web:92596860ec5950bf6ffb09"
-};
-               // Initialiser Firebase
-               firebase.initializeApp(firebaseConfig);
-           </script>
+           <script src="../firebase-init.js"></script>
     
 </head>
 <body>

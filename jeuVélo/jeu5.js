@@ -10,6 +10,7 @@ let level = 1;
 let imagesOnBoard = [];
 const gameBoard = document.getElementById('gameBoard');
 let isGameRunning = false;
+let clickCount = 0; // SUB'Stats: total clics durant la partie
 
 const startBtn = document.getElementById('startButton');
 if (startBtn) startBtn.addEventListener('click', startGame);
@@ -18,6 +19,7 @@ function startGame() {
     isGameRunning = true;
     score = 0;
     timeLeft = 20;
+    clickCount = 0;
     const startButton = document.getElementById('startButton');
     startButton.style.display = 'none'; // ou startButton.remove(); pour le supprimer complètement
     console.log("Le jeu commence !");
@@ -63,6 +65,7 @@ function addImage(imageName) {
     imgElement.style.top = `${position.top}px`;
     imgElement.onclick = () => {
         handleImageClick(imageName);
+        clickCount++; // comptabilise le clic sur une image
         levelUp();
     };
     gameBoard.appendChild(imgElement);
@@ -115,6 +118,7 @@ function updateTimer() {
 
 function endGame() {
     isGameRunning = false;
+    try { if (window.SUBStats) window.SUBStats.addClicks(playerName, clickCount); } catch(e) {}
     alert(`Jeu terminé ! Votre score est : ${score}`);
     // Ajoutez ici la logique pour enregistrer le score dans Firebase si nécessaire
             // Ajoutez ici la logique pour vérifier et mettre à jour le meilleur score
@@ -122,24 +126,12 @@ function endGame() {
 }
 
 function updateBestScoreIfNecessary() {
-    var playerScoreRef = firebase.database().ref('/scores/' + playerName + '/jeu5');
-    playerScoreRef.once('value', function(snapshot) {
-        var bestScore = snapshot.val() || 0;
-        if (score > bestScore) {
-            playerScoreRef.set(score, function(error) {
-                if (error) {
-                    alert('Une erreur est survenue lors de la mise à jour du score.');
-                } else {
-                    alert('Nouveau meilleur score enregistré !');
-                }
-                // Maintenant que nous avons terminé, redirigez vers la page de fin du jeu
-                redirectToGameOverPage();
-            });
-        } else {
-            // Pas de nouveau meilleur score, redirigez simplement
-            redirectToGameOverPage();
-        }
-    });
+    try {
+        if (!window.ScoreUtil) { redirectToGameOverPage(); return; }
+        window.ScoreUtil.setMaxScore(playerName, 'jeu5', score)
+          .then(({updated}) => { if (updated) alert('Nouveau meilleur score enregistré !'); })
+          .finally(() => { redirectToGameOverPage(); });
+    } catch(_) { redirectToGameOverPage(); }
 }
 
 function redirectToGameOverPage() {

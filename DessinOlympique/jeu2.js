@@ -12,9 +12,11 @@ let drawing = false;
 let drawnPoints = [];  // Tableau pour stocker les points dessinés
 let timeRemaining = 20;  // Temps restant en secondes
 let timerInterval;
+let clickCount = 0; // SUB'Stats: clics agrégés (mises en contact du crayon)
 
 canvas.addEventListener('mousedown', () => {
     drawing = true;
+    clickCount++;
     ctx.beginPath();
     
     // Démarrer le timer lors du premier clic de l'utilisateur
@@ -207,6 +209,7 @@ function calculateScore() {
 
 function gameOver() {
     const score = calculateScore(); // Calcule le score
+    try { if (window.SUBStats) window.SUBStats.addClicks(playerName, clickCount); } catch(e) {}
     alert(`Jeu terminé! Votre score est ${score} sur 50.`);
     
     // Mise à jour du meilleur score si nécessaire (logique similaire à celle fournie pour le jeu 1)
@@ -214,29 +217,13 @@ function gameOver() {
 }
 
 function updateBestScoreIfNecessary(score) {
-    var playerScoreRef = firebase.database().ref('/scores/' + playerName + '/jeu2');
-    playerScoreRef.once('value', function(snapshot) {
-        var bestRaw = snapshot.val();
-        var bestScore = parseFloat(bestRaw);
-        if (isNaN(bestScore)) bestScore = 0;
-        var newScore = typeof score === 'number' ? score : parseFloat(score);
-        if (isNaN(newScore)) newScore = 0;
-
-        if (newScore > bestScore) {
-            playerScoreRef.set(newScore, function(error) {
-                if (error) {
-                    alert('Une erreur est survenue lors de la mise à jour du score.');
-                } else {
-                    alert('Nouveau meilleur score enregistré !');
-                }
-                // Maintenant que nous avons terminé, redirigez vers la page de fin du jeu
-                redirectToGameOverPage();
-            });
-        } else {
-            // Pas de nouveau meilleur score, redirigez simplement
-            redirectToGameOverPage();
-        }
-    });
+    try {
+        const s = (typeof score === 'number') ? score : parseFloat(score) || 0;
+        if (!window.ScoreUtil) { redirectToGameOverPage(); return; }
+        window.ScoreUtil.setMaxScore(playerName, 'jeu2', s)
+          .then(({updated}) => { if (updated) alert('Nouveau meilleur score enregistré !'); })
+          .finally(() => { redirectToGameOverPage(); });
+    } catch(_) { redirectToGameOverPage(); }
 }
 
 function redirectToGameOverPage() {

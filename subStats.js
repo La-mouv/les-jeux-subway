@@ -55,5 +55,6 @@
   var latestStats = null, latestSessions = null;
   var update = function(){ render(latestStats, latestSessions); };
   db.ref('/stats/players').on('value', function(snap){ latestStats = snap.val() || {}; update(); });
-  db.ref('/events/sessions').limitToLast(500).on('value', function(snap){ latestSessions = snap.val() || {}; update(); });
+  // Limite l'historique côté client pour alléger le rendu
+  db.ref('/events/sessions').limitToLast(300).on('value', function(snap){ latestSessions = snap.val() || {}; update(); });
 })();
