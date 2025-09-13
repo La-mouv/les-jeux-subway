@@ -4,8 +4,8 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+    font-family: var(--font-sans);
+    background-color: var(--bg-foam);
 }
 
 #gameContainer {
@@ -14,7 +14,7 @@ body, html {
     background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('../images/imageJeu4.jpg') no-repeat center center; /* Garde l'image de fond de #game2container */
     background-size: cover;
     padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Mise à jour de l'ombre pour correspondre à #gameContainer */
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly; /* Alignement vertical des enfants de flex */
@@ -49,33 +49,34 @@ button {
     background-color: #fff;
     padding: 10px;
     border-radius: 4px;
-    margin-bottom: 20px;  /* Ajout d'une marge en bas pour l'espacement */
+    margin-bottom: 20px;
+    color: var(--text);
 }
 
 #titre {
-    font-family: 'Fredoka One', cursive, sans-serif; /* Police plus ludique et amusante */
-    color: #dd3333; /* Couleur vive */
-    font-size: 2.5em; /* Taille de police plus grande pour le titre */
-    margin-bottom: 30px; /* Plus d'espace sous le titre */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée pour le titre */
+    font-family: var(--font-display);
+    color: var(--subway-green);
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 button {
     padding: 15px 30px;
     cursor: pointer;
-    background-color: #22cc88;
+    background-color: var(--subway-green);
     border: 2px solid transparent;
     border-radius: 25px;
     color: white;
     font-size: 1.2em;
     font-weight: bold;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-sm);
     transition: background-color 0.2s, transform 0.1s, border-color 0.2s;
 }
 
 button:hover {
-    background-color: #22cc88;
-    border-color: #22cc88;
+    background-color: var(--subway-yellow);
+    color: var(--subway-deep);
     transform: scale(1.05);
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
 }

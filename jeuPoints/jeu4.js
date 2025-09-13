@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalPoints = [];
     let placedPoints = [];
     const numberOfPoints = 5;
-    const pointRadius = 10; // Rayon des points
+    const pointRadius = 10; // Rayon logique pour calculs/texte
     const pointThreshold = 20; // Seuil de distance pour considérer un point bien placé
     const displayTime = 5000; // 3 secondes
     const gameTime = 5000; // 5 secondes
@@ -20,11 +20,23 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = 400;
     canvas.height = 400;
 
+    // Icone SUB à la place des points
+    const subIcon = new Image();
+    // Placez le fichier à ../images/sub.png
+    subIcon.src = '../images/sub.png';
+    subIcon.onerror = () => { try { subIcon.src = '../images/sub.svg'; } catch (e) {} };
+    const ICON_SIZE = 36; // taille d'affichage de l'icône
+    function iconReady() { return !!(subIcon.complete && subIcon.naturalWidth > 0); }
+
     startButton.addEventListener('click', startGame);
 
     function startGame() {
         originalPoints = generatePoints(numberOfPoints);
-        drawPoints(originalPoints, 'blue'); // Points originaux en bleu
+        // Si l'icône n'est pas encore prête, dessiner quand elle est chargée
+        if (!iconReady()) {
+            subIcon.onload = () => drawPoints(originalPoints, 'blue');
+        }
+        drawPoints(originalPoints, 'blue'); // Affichage immédiat (icône si prête, sinon cercle)
         startTimer(displayTime / 1000, () => {
             clearCanvas();
             startTimer(gameTime / 1000, () => {
@@ -53,28 +65,52 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     function generatePoints(num) {
+        const margin = ICON_SIZE / 2; // éviter le rognage avec l'icône
         let points = [];
         for (let i = 0; i < num; i++) {
             points.push({
-                x: Math.random() * (canvas.width - 2 * pointRadius) + pointRadius,
-                y: Math.random() * (canvas.height - 2 * pointRadius) + pointRadius
+                x: Math.random() * (canvas.width - 2 * margin) + margin,
+                y: Math.random() * (canvas.height - 2 * margin) + margin
             });
         }
         return points;
     }
 
     function drawPoints(points, color) {
-        ctx.fillStyle = color;
+        ctx.fillStyle = color || '#000';
         points.forEach(point => {
-            drawPoint(point.x, point.y);
+            drawPoint(point.x, point.y, color);
         });
     }
 
     function drawPoint(x, y, color) {
-        ctx.fillStyle = color;
+        // Halo parameters
+        const radius = iconReady() ? ICON_SIZE * 0.85 : pointRadius * 1.8;
+        const inner = Math.max(2, radius * 0.2);
+        const glowColor = (color === 'red') ? 'rgba(255, 82, 82, 0.55)'
+                          : (color === 'blue') ? 'rgba(51, 153, 255, 0.55)'
+                          : 'rgba(0, 0, 0, 0.35)';
+
+        // Draw radial glow halo
+        ctx.save();
+        const g = ctx.createRadialGradient(x, y, inner, x, y, radius);
+        g.addColorStop(0, glowColor);
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
         ctx.beginPath();
-        ctx.arc(x, y, pointRadius, 0, 2 * Math.PI);
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
         ctx.fill();
+
+        // Icon or fallback dot on top
+        if (iconReady()) {
+            ctx.drawImage(subIcon, x - ICON_SIZE / 2, y - ICON_SIZE / 2, ICON_SIZE, ICON_SIZE);
+        } else {
+            ctx.fillStyle = (color === 'red') ? '#e74c3c' : (color === 'blue') ? '#3498db' : '#d14d42';
+            ctx.beginPath();
+            ctx.arc(x, y, pointRadius, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        ctx.restore();
     }
 
     function placePoint(e) {
@@ -84,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let y = e.clientY - rect.top;
         let newPoint = { x: x, y: y };
         placedPoints.push(newPoint);
-        drawPoint(x, y, 'red'); // Points placés en rouge
+        drawPoint(x, y, 'red'); // Icône ou cercle si fallback
     
         highlightClosestOriginalPoint(newPoint); // Met en évidence le point bleu le plus proche
     
@@ -187,7 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let closestPoint = findClosestOriginalPoint(placedPoint);
         let distance = calculateDistance(placedPoint, closestPoint);
         let pointScore = Math.max(0, 10 - distance);
-        ctx.fillText(pointScore.toFixed(0), placedPoint.x + pointRadius, placedPoint.y + pointRadius);
+        const offset = iconReady() ? ICON_SIZE / 2 : pointRadius;
+        ctx.fillText(pointScore.toFixed(0), placedPoint.x + offset, placedPoint.y + offset);
     }
     
 

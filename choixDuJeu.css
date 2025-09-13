@@ -4,41 +4,85 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Arial', sans-serif;
-    color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
-    overflow: hidden; /* Empêche le défilement de la page entière */
-    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+    font-family: var(--font-sans);
+    color: var(--text);
+    overflow: hidden;
+    background-color: var(--bg-foam);
 }
 
 .games-container {
     position: relative;
-    overflow: hidden;
-    width: 720px; /* Largeur fixe pour le conteneur de jeu */
-    height: 720px; /* Hauteur fixe pour le conteneur de jeu */
-    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('images/ImageEcranAccueil.jpg');
+    overflow: auto;
+    width: 720px;
+    height: 720px;
+    background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('images/ImageEcranAccueil.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     margin: auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center; /* Centrer les éléments à l'intérieur du conteneur */
+    justify-content: flex-start;
+    align-items: center;
+    padding: 18px;
 }
 
-#game-slider {
-    flex-grow: 1; /* Permet au slider de remplir l'espace disponible */
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Centrer les éléments à l'intérieur du conteneur */
-    flex-direction: row;
-    justify-content: flex-start; /* Alignez les éléments de gauche à droite */
-    transition: transform 0.5s ease;
-    width: 80%; /* Il prendra toute la largeur du .games-container */
-    margin: 0 auto; /* Centrer dans games-container si nécessaire */
-    /* autres styles... */
-  }
+.page-title {
+  font-family: var(--font-display);
+  color: var(--subway-yellow);
+  margin: 4px 0 14px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.35);
+  font-size: 2.8em;
+  letter-spacing: .5px;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  width: 100%;
+  margin-top: auto;   /* centre verticalement la grille */
+  margin-bottom: auto;
+}
+
+.game-card {
+  position: relative;
+  min-height: 150px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  cursor: pointer;
+}
+.game-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  /* assombrit le haut pour une meilleure lisibilité du titre en haut */
+  background: linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.15));
+}
+.game-card .content {
+  position: absolute; inset: 0 0 auto 0; /* en haut */
+  padding: 12px 12px 14px;
+  color: #fff;
+}
+.game-card h3 { margin: 0 0 6px; font-family: var(--font-display); }
+.game-card p { margin: 0; font-size: .95em; line-height: 1.25; }
+.game-card:hover { transform: translateY(-2px); transition: transform .12s ease; }
+
+.grid-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  left: 0; right: 0; bottom: 12px;   /* ancré en bas du conteneur */
+}
+.grid-actions .btn { min-width: 180px; text-align: center; }
+
+/* Slider legacy styles removed in grid refonte */
   
 
 .game-leaderboard {
@@ -78,7 +122,7 @@ body, html {
   max-width: 620px;
   background: rgba(255,255,255,0.94);
   color: #111;
-  border: 3px solid #ffd700;
+  border: 3px solid var(--subway-yellow);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.35);
   backdrop-filter: blur(4px);
@@ -86,7 +130,7 @@ body, html {
 }
 .hof-inline-table { width: 100%; border-collapse: separate; border-spacing: 0; }
 .hof-inline-table thead th {
-  background: #ffd700;
+  background: var(--subway-yellow);
   color: #111;
   font-weight: 800;
   font-size: 1.3em;
@@ -110,7 +154,7 @@ body, html {
     padding: 10px;
     width: 80%; /* ajuste la largeur de l'input dans le conteneur */
     max-width: 300px; /* optionnel, pour ne pas devenir trop large sur les grands écrans */
-    border: 2px solid #0088cc; /* Bordure bleue */
+    border: 2px solid var(--subway-green);
     border-radius: 20px; /* Coins arrondis pour l'input */
     font-size: 1.2em; /* Texte plus grand dans l'input */
 }
@@ -118,32 +162,33 @@ body, html {
 #hallOfFame {
   padding: 10px 20px;
   cursor: pointer;
-  background-color: rgb(240, 233, 104); /* Vert, couleur vive et ludique */
-  border: none; /* Pas de bordure */
-  border-radius: 20px; /* Coins arrondis */
-  color: rgb(0, 0, 0); /* Texte en blanc pour contraste */
-  font-size: 1.5em; /* Augmenter la taille de la police */
-  font-weight: bold; /* Rendre le texte en gras */
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner du relief */
-  transition: background-color 0.2s, transform 0.1s; /* Transition pour le survol */
+  background-color: var(--subway-yellow);
+  border: none;
+  border-radius: 20px;
+  color: var(--subway-deep);
+  font-size: 1.5em;
+  font-weight: bold;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.2s, transform 0.1s;
 }
 
 button {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #22aa22; /* Vert, couleur vive et ludique */
-    border: none; /* Pas de bordure */
-    border-radius: 20px; /* Coins arrondis */
-    color: white; /* Texte en blanc pour contraste */
-    font-size: 1.5em; /* Augmenter la taille de la police */
-    font-weight: bold; /* Rendre le texte en gras */
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner du relief */
-    transition: background-color 0.2s, transform 0.1s; /* Transition pour le survol */
+    background-color: var(--subway-green);
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 button:hover {
-    background-color: rgb(35, 205, 137);/* Changement de couleur au survol */
-    transform: scale(1.05); /* Légère augmentation de la taille au survol */
+    background-color: var(--subway-yellow);
+    color: var(--subway-deep);
+    transform: scale(1.05);
 }
 
 /* Styles pour le leaderboard */
@@ -151,7 +196,7 @@ button:hover {
   width: 50%; /* Prend toute la largeur du conteneur parent .game-leaderboard */
   background-color: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
   color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
-  font-family: 'Courier New', monospace; /* Police classique rétro */
+  font-family: var(--font-sans);
   padding: 10px;
   border-radius: 8px; /* Coins arrondis pour un look moderne */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
@@ -173,7 +218,7 @@ button:hover {
   background-color: rgba(255, 215, 0, 0.7); /* Fond doré semi-transparent pour le vainqueur */
   color: #000000; /* Texte noir pour le contraste */
   font-weight: bold;
-  border: 2px solid #ffd700; /* Bordure dorée pour le vainqueur */
+  border: 2px solid var(--subway-yellow); /* Bordure dorée pour le vainqueur */
   margin-bottom: 10px;
 }
 
@@ -250,9 +295,7 @@ button:hover {
     padding: 5px;
 }
 
-.pseudo {
-  color: #22aa22; /* ou toute autre couleur que vous préférez */
-}
+.pseudo { color: var(--subway-green); }
 
 #resetScoresButton {
   position: absolute;

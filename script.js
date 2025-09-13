@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadPseudos();
     attachFormSubmitEvent();
     attachCreatePseudoButton();
+    scheduleImagePreload();
 });
 
 
@@ -18,7 +19,7 @@ function loadPseudos() {
 
     pseudosRef.once('value', function(snapshot) {
         var pseudos = snapshot.val() || {};
-        existingPlayersSelect.innerHTML = '<option value="" disabled selected>Choisissez votre pseudo !</option>';
+        existingPlayersSelect.innerHTML = '<option value="" disabled selected>Sélectionner votre profil</option>';
         Object.keys(pseudos).forEach(function(pseudo) {
             var option = document.createElement('option');
             option.value = option.textContent = pseudo; // Ici, nous utilisons pseudo comme valeur et texte
@@ -122,4 +123,46 @@ function continueWithPlayerName(pseudo) {
     sessionStorage.setItem('playerName', pseudo);
     window.location.href = 'choixDuJeu.html';
     // Notez que cette fonction doit être définie quelque part, elle est appelée après la création du nouveau pseudo
+}
+
+// --------- Preload images to smooth first navigation ---------
+function scheduleImagePreload() {
+    // Respecte l'économie de données / connexions lentes
+    try {
+        const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if (c && (c.saveData || /(^|\s)(slow-2g|2g)($|\s)/i.test(c.effectiveType || ''))) {
+            return; // ne pas précharger sur réseaux lents
+        }
+    } catch (_) {}
+    const urls = [
+        // Backgrounds
+        'images/ImageJeu1.png',
+        'images/ImageJeu2.png',
+        'images/imageJeu3.jpg',
+        'images/imageJeu4.jpg',
+        'images/imageJeu5.jpg',
+        'images/imageJeu6.jpg',
+        // Icons / sprites
+        'images/sub.svg',
+        'jeuVélo/Images/Bike.png',
+        'jeuVélo/Images/Ballon.png',
+        'jeuVélo/Images/Skateboard.png',
+        'jeuVélo/Images/Scooter.png'
+    ];
+
+    const preload = () => {
+        const seen = new Set();
+        urls.forEach((u) => {
+            if (seen.has(u)) return; seen.add(u);
+            const img = new Image();
+            img.decoding = 'async';
+            img.src = u;
+        });
+    };
+
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(preload, { timeout: 3000 });
+    } else {
+        setTimeout(preload, 0);
+    }
 }

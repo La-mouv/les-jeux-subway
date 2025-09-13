@@ -15,7 +15,7 @@ function restartGame() {
 
 function loadLeaderboard() {
     const leaderboardElement = document.getElementById('leaderboardJeu1');
-    firebase.database().ref('/scores').orderByChild('jeu1').limitToLast(5).on('value', (snapshot) => {
+    firebase.database().ref('/scores').orderByChild('jeu1').limitToLast(10).on('value', (snapshot) => {
       const scores = snapshot.val();
       if (scores) {
         const sortedScores = Object.keys(scores).map(player => ({ player, score: scores[player]['jeu1'] })).sort((a, b) => b.score - a.score);
@@ -25,8 +25,9 @@ function loadLeaderboard() {
   }
   
   function displayLeaderboard(scores, element) {
-    const leaderboardHtml = scores.map((score, index) => `<p>${index + 1}. ${score.player} - ${parseFloat(score.score).toFixed(1)}</p>`).join('');
-    element.innerHTML = leaderboardHtml;
+    const top = scores.slice(0,10);
+    const rows = top.map((s, i) => `<tr><td>${i+1}</td><td>${s.player}</td><td>${parseFloat(s.score).toFixed(1)}</td></tr>`).join('');
+    element.innerHTML = `<div class="lb-box"><table class="lb-table"><thead><tr><th>Classement</th><th>Joueurs</th><th>Score</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
   
   // Appeler cette fonction à la fin du jeu ou lors du chargement de la page de fin

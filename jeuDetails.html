@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détails du jeu</title>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="jeuDetails.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJ1HWyWcI6fGeZ19GQjjML_dgI1HMo4MA",
+      authDomain: "les-jeux-subway.firebaseapp.com",
+      databaseURL: "https://les-jeux-subway-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "les-jeux-subway",
+      storageBucket: "les-jeux-subway.firebasestorage.app",
+      messagingSenderId: "489426965676",
+      appId: "1:489426965676:web:92596860ec5950bf6ffb09"
+    };
+    if (!window.firebase || !firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+<body>
+  <div class="details-container" id="details-container">
+    <div class="info-card surface">
+      <h1 id="game-title" class="details-title"></h1>
+      <p id="game-desc"></p>
+      <div class="leaderboard-block">
+        <div id="leaderboard"></div>
+      </div>
+      <div class="actions">
+        <button id="play-btn">Jouer</button>
+        <button id="back-btn" class="secondary">Retour au choix du jeu</button>
+      </div>
+    </div>
+  </div>
+  <script src="statsUtil.js"></script>
+  <script src="jeuDetails.js"></script>
+</body>
+</html>

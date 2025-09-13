@@ -4,8 +4,8 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    font-family: var(--font-sans);
+    background-color: var(--bg-foam);
 }
 
 #jeuContainer {
@@ -14,13 +14,14 @@ body, html {
     background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('../images/imageJeu5.jpg') no-repeat center center;
     background-size: cover;
     padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
     border-radius: 10px;
     margin: auto;
+    position: relative;
 }
 
 #gameBoard {
@@ -35,15 +36,16 @@ body, html {
     background-color: #fff;
     padding: 10px;
     border-radius: 4px;
-    margin-bottom: 20px;  /* Ajout d'une marge en bas pour l'espacement */
+    margin-bottom: 20px;
+    color: var(--text);
 }
 
 #titre {
-    font-family: 'Fredoka One', cursive, sans-serif; /* Police plus ludique et amusante */
-    color: #dd3333; /* Couleur vive */
-    font-size: 2.5em; /* Taille de police plus grande pour le titre */
-    margin-bottom: 10px; /* Plus d'espace sous le titre */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée pour le titre */
+    font-family: var(--font-display);
+    color: var(--subway-green);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 button {
@@ -53,24 +55,29 @@ button {
     transform: translate(-50%, -50%);
     padding: 15px 30px;
     cursor: pointer;
-    background-color: #22cc88;
+    background-color: var(--subway-green);
     border: 2px solid transparent;
     border-radius: 25px;
     color: white;
     font-size: 1.2em;
     font-weight: bold;
-    margin-bottom: 10px; /* Plus d'espace sous le titre */
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
     transition: background-color 0.2s, transform 0.1s, border-color 0.2s;
+}
+
+/* Conserver la translation sur hover pour éviter le décalage */
+#startButton:hover {
+    transform: translate(-50%, -50%) scale(1.03);
 }
 
 #score {
     background: rgba(255, 255, 255, 0.7);
     padding: 10px;
     border-radius: 5px;
-    color: #d14d42;
-    font-size: 2.5em;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    color: var(--subway-deep);
+    font-size: 2.4em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
     margin: 15px 0;
 }
 
@@ -81,11 +88,11 @@ button {
 }
 
 #explication {
-    font-family: 'comic sans ms', cursive, sans-serif; /* Police plus ludique et amusante */
-    color: #3347dd; /* Couleur vive */
-    font-size: 1.2em; /* Taille de police plus grande pour le titre */
-    margin-bottom: 10px; /* Plus d'espace sous le titre */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée pour le titre */
+    font-family: var(--font-sans);
+    color: var(--subway-deep);
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 #playerInfo {

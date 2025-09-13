@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choix du Jeu - Les Jeux du Bureau</title>
+    <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="choixDuJeu.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
        <!-- Ajouter les scripts Firebase -->
@@ -36,51 +37,15 @@
 </div>
 
     <div class="games-container">
-        <!-- Boutons de navigation -->
-        <button id="left-button" onclick="move(-1)">&#10094;</button> <!-- Flèche gauche -->
-
-        <!-- Conteneur des jeux -->
-        <div id="game-slider">
-          <div class="game-leaderboard">
-            <button onclick="startGame('DessinOlympique/jeu2.html','jeu2')">SUB'Dessin</button>
-            <p class="game-desc">Trace le SUB d’une seule traite: précision = score.</p>
-            <div id="leaderboardJeu2"></div>
-          </div>
-          <div class="game-leaderboard">
-            <button onclick="startGame('jeuTyping/jeu1.html','jeu1')">Dacty'SUB</button>
-            <p class="game-desc">Tape les mots à toute vitesse: rapidité = points.</p>
-            <div id="leaderboardJeu1"></div>
-          </div>
-          <div class="game-leaderboard">
-            <button onclick="startGame('jeuClique/jeu3.html','jeu3')">SUB'Click</button>
-            <p class="game-desc">Clique le carré vert un max en 10 s.</p>
-            <div id="leaderboardJeu3"></div>
-          </div>
-          <div class="game-leaderboard">
-            <button onclick="startGame('jeuPoints/jeu4.html','jeu4')">Memory'SUB</button>
-            <p class="game-desc">Mémorise puis retrouve les SUB cachés.</p>
-            <div id="leaderboardJeu4"></div>
-          </div>
-          <div class="game-leaderboard">
-            <button onclick="startGame('jeuVélo/jeu5.html','jeu5')">SUB'Collect</button>
-            <p class="game-desc">Collecte les SUB, évite les pièges pendant 20 s.</p>
-            <div id="leaderboardJeu5"></div>
-          </div>
-          <div class="game-leaderboard">
-            <button onclick="startGame('jeuF1/jeu6.html','jeu6')">SUB l'éclair</button>
-            <p class="game-desc">Réagis aux feux et fonce: plus vite = mieux.</p>
-            <div id="leaderboardJeu6"></div>
-          </div>
-          <div class="game-leaderboard hof">
-            <div id="hallOfFame2"></div>
-          </div>
-          <div class="game-leaderboard hof">
-            <div id="subStats"></div>
-          </div>
+        <h1 class="page-title">Choix du jeu</h1>
+        <div id="games-grid" class="games-grid"></div>
+        <div class="grid-actions">
+          <a class="btn" href="hallOfFame/hallOfFame.html">Hall of Fame</a>
+          <a class="btn" href="subStats.html">SUB'Stats</a>
         </div>
-        <button id="right-button" onclick="move(1)">&#10095;</button>  <!-- Flèche droite -->
-      </div>
-      <button id="resetScoresButton" style="display: none;">Reset</button>
+    </div>
+    
+    <button id="resetScoresButton" style="display: none;">Reset</button>
 
 
 

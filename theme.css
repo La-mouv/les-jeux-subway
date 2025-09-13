@@ -1,0 +1,131 @@
+/* Global Subway-inspired theme */
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fredoka+One&display=swap');
+
+:root {
+  /* Palette */
+  --subway-green: #009943;
+  --subway-yellow: #ffc20e;
+  --subway-deep: #004731;
+  --bg-foam: #f4f9f1;
+  --surface: #ffffff;
+  --text: #0f1f14;
+
+  /* Effects */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  /* Radius */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-display: 'Fredoka One', 'Fredoka', system-ui, sans-serif;
+}
+
+/* Base */
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg-foam);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+h1, h2, .title {
+  font-family: var(--font-display);
+  color: var(--subway-green);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.12);
+}
+
+/* Buttons */
+button, .btn {
+  padding: 12px 22px;
+  cursor: pointer;
+  background-color: var(--subway-green);
+  border: none;
+  border-radius: 22px;
+  color: #ffffff;
+  font-size: 1.1em;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.2s ease, transform 0.1s ease, color 0.2s ease;
+}
+
+button:hover, .btn:hover {
+  background-color: var(--subway-yellow);
+  color: var(--subway-deep);
+  transform: scale(1.04);
+}
+
+/* Inputs */
+input, select, textarea {
+  font-family: var(--font-sans);
+  border: 2px solid var(--subway-green);
+  border-radius: 16px;
+  padding: 10px 12px;
+  background: #fff;
+  color: var(--text);
+}
+
+/* Cards / surfaces */
+.surface, .card {
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+/* Leaderboard common look */
+.leaderboard {
+  background: rgba(0,0,0,0.70);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.leaderboard .top {
+  background: rgba(255, 215, 0, 0.7);
+  color: #111;
+  font-weight: 800;
+  border: 2px solid var(--subway-yellow);
+}
+
+/* Utility */
+.center {
+  margin: 0 auto;
+  display: block;
+}
+
+.hidden { display: none; }
+
+/* Unified leaderboard table */
+.lb-box {
+  background: rgba(0,0,0,0.70);
+  color: #fff;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  padding: 8px 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lb-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.lb-table thead th {
+  background: var(--subway-yellow);
+  color: #111;
+  font-weight: 800;
+  font-size: 1.1em;
+  padding: 10px 8px;
+}
+.lb-table tbody td {
+  padding: 10px 8px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+}
+.lb-table tbody tr:first-child td {
+  background: rgba(255, 215, 0, 0.7);
+  color: #111;
+  font-weight: 800;
+}

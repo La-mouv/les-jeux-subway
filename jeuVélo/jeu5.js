@@ -8,10 +8,14 @@ let timeLeft = 20;
 let gameInterval;
 let level = 1;
 let imagesOnBoard = [];
+const gameBoard = document.getElementById('gameBoard');
+let isGameRunning = false;
 
-document.getElementById('startButton').addEventListener('click', startGame);
+const startBtn = document.getElementById('startButton');
+if (startBtn) startBtn.addEventListener('click', startGame);
 
 function startGame() {
+    isGameRunning = true;
     score = 0;
     timeLeft = 20;
     const startButton = document.getElementById('startButton');
@@ -20,6 +24,7 @@ function startGame() {
     level = 1;
     imagesOnBoard = [];
     updateScore();
+    if (!gameBoard) return;
     gameBoard.innerHTML = '';
     initializeImages();
     gameInterval = setInterval(updateTimer, 1000); // Ajoute cet intervalle
@@ -27,6 +32,7 @@ function startGame() {
 
 function initializeImages() {
     // Vider le tableau de jeu et la liste des images
+    if (!gameBoard) return;
     gameBoard.innerHTML = '';
     imagesOnBoard = [];
 

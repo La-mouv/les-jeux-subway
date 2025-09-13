@@ -4,8 +4,8 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4; /* Couleur de fond de la page, à ajuster si nécessaire */
+    font-family: var(--font-sans);
+    background-color: var(--bg-foam);
 }
 
 #gameContainer {
@@ -14,7 +14,7 @@ body, html {
     background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('../images/imageJeu6.jpg') no-repeat center center; /* Assurez-vous que le chemin de l'image est correct */
     background-size: cover;
     padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     justify-content: center; /* Centrer le contenu verticalement */
@@ -35,20 +35,21 @@ body, html {
 #startButton {
     padding: 15px 30px;
     cursor: pointer;
-    background-color: #22cc88;
+    background-color: var(--subway-green);
     border: none;
     border-radius: 25px;
     color: white;
     font-size: 1.2em;
     font-weight: bold;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-sm);
     transition: background-color 0.2s, transform 0.1s;
     z-index: 2; /* S'assure que le bouton se trouve au-dessus des lumières */
 }
 
 #startButton:hover {
-    background-color: #1faa77; /* Changement de couleur au survol */
-    transform: scale(1.05); /* Effet de zoom légèrement au survol */
+    background-color: var(--subway-yellow);
+    color: var(--subway-deep);
+    transform: scale(1.05);
 }
 
 #startButton:active {
@@ -112,7 +113,6 @@ body, html {
 
 #timerDisplay {
     font-size: 2em;
-    color: #333;
+    color: var(--text);
     margin: 20px 0;
-    /* Ajoutez d'autres styles si nécessaire */
 }

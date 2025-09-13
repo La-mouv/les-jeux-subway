@@ -4,8 +4,8 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    font-family: var(--font-sans);
+    background-color: var(--bg-foam);
 }
 
 #jeu3container {
@@ -14,7 +14,7 @@ body, html {
     background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('../images/imageJeu3.jpg') no-repeat center center;
     background-size: cover;
     padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -29,7 +29,7 @@ body, html {
     border: 2px solid #ddd;
     line-height: 200px;
     cursor: pointer;
-    background-color: #22aa22; /* Vert, couleur vive et ludique */
+    background-color: var(--subway-green);
     font-size: 1.5em; /* Augmenter la taille de la police */
     font-weight: bold; /* Rendre le texte en gras */
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner du relief */
@@ -55,8 +55,8 @@ body, html {
     padding: 10px;
     border-radius: 5px;
     width: 60%;
-    font-family: 'Helvetica', sans-serif;
-    color: #333;
+    font-family: var(--font-sans);
+    color: var(--text);
     font-size: 1.2em;
     text-align: center;
     margin-top: 20px;
@@ -66,16 +66,16 @@ body, html {
     background: rgba(255, 255, 255, 0.7);
     padding: 10px;
     border-radius: 5px;
-    color: #d14d42;
-    font-size: 2.5em;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    color: var(--subway-deep);
+    font-size: 2.4em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
     margin: 15px 0;
 }
 
 #explication {
-    font-family: 'comic sans ms', cursive, sans-serif; /* Police plus ludique et amusante */
-    color: #3347dd; /* Couleur vive */
-    font-size: 1.2em; /* Taille de police plus grande pour le titre */
-    margin-bottom: 30px; /* Plus d'espace sous le titre */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre portée pour le titre */
+    font-family: var(--font-sans);
+    color: var(--subway-deep);
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
 }

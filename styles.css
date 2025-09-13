@@ -4,9 +4,9 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Arial', sans-serif;
+    font-family: var(--font-sans);
     overflow: hidden;
-    background-color: #f4f9f1; /* Vert très pâle, frais, façon Subway */
+    background-color: var(--bg-foam);
 }
 
 .app-container {
@@ -17,9 +17,9 @@ body, html {
     background-position: center;
     background-repeat: no-repeat;
     padding: 20px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    border-radius: 16px;
-    border: 4px solid #ffc20e; /* Jaune Subway */
+    box-shadow: var(--shadow-md);
+    border-radius: var(--radius-md);
+    border: 4px solid var(--subway-yellow);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,7 +32,7 @@ body, html {
     padding: 10px;
     width: 80%;
     max-width: 300px;
-    border: 2px solid #009943; /* Vert Subway */
+    border: 2px solid var(--subway-green);
     border-radius: 20px;
     font-size: 1.2em;
     background-color: #ffffff;
@@ -41,25 +41,25 @@ body, html {
 button {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #009943; /* Vert Subway */
+    background-color: var(--subway-green);
     border: none;
     border-radius: 20px;
     color: #ffffff;
     font-size: 1.5em;
     font-weight: bold;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-sm);
     transition: background-color 0.2s ease, transform 0.1s ease, color 0.2s ease;
 }
 
 button:hover {
-    background-color: #ffc20e; /* Jaune Subway au survol */
-    color: #004731; /* Vert foncé pour contraste */
+    background-color: var(--subway-yellow);
+    color: var(--subway-deep);
     transform: scale(1.05);
 }
 
 #bienvenue {
-    font-family: 'Fredoka One', cursive, sans-serif;
-    color: #009943; /* Vert Subway pour le titre */
+    font-family: var(--font-display);
+    color: var(--subway-green);
     font-size: 3em; /* légèrement réduit pour tenir sur une ligne */
     margin-bottom: 30px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
@@ -94,8 +94,17 @@ button:hover {
     max-width: none;
     padding: 10px 14px;
     font-size: 1.2em;
-    border: 2px solid #009943; /* Vert Subway */
+    border: 2px solid var(--subway-green);
     border-radius: 12px;
     background-color: #ffffff;
     box-sizing: border-box;
 }
+
+/* Hint above create profile */
+.profile-hint {
+    color: var(--subway-deep);
+    font-weight: 600;
+    text-align: center;
+    margin: 28px auto 8px; /* plus d'espace au-dessus du texte */
+}
+.profile-hint .arrow { font-size: 1.2em; margin-left: 6px; }

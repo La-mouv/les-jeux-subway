@@ -1,6 +1,6 @@
 body {
-    background-color: #f0f0f0;
-    font-family: 'Fredoka One', sans-serif;
+    background-color: var(--bg-foam);
+    font-family: var(--font-sans);
 }
 
 .appcontainer {
@@ -21,8 +21,8 @@ body {
 }
 
 button {
-    width: 250px; /* Prend toute la largeur du conteneur parent .game-leaderboard */
-    background-color: #008CBA;
+    width: 250px;
+    background-color: var(--subway-green);
     border: none;
     color: white;
     padding: 15px 32px;
@@ -32,25 +32,24 @@ button {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+    border-radius: 22px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: var(--shadow-sm);
 }
 
 button:hover {
-    background-color: #005f5f;
+    background-color: var(--subway-yellow);
+    color: var(--subway-deep);
 }
 
 /* Styles pour le leaderboard */
 #leaderboardJeu1, #leaderboardJeu2, #leaderboardJeu3 {
-    width: 300px; /* Prend toute la largeur du conteneur parent .game-leaderboard */
-    background-color: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
-    color: #FFFFFF; /* Texte blanc pour une meilleure lisibilité */
-    font-family: 'Courier New', monospace; /* Police classique rétro */
-    padding: 10px;
-    border-radius: 8px; /* Coins arrondis pour un look moderne */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
-    margin-bottom: 20px;
-    margin-top: 20px;
+    width: 92%;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 18px auto;
   }
   
   /* Style pour les entrées du leaderboard */
@@ -62,10 +61,10 @@ button:hover {
   
   /* Style spécifique pour le premier joueur */
   #leaderboardJeu1 p:first-child, #leaderboardJeu2 p:first-child, #leaderboardJeu3 p:first-child {
-    background-color: rgba(255, 215, 0, 0.7); /* Fond doré semi-transparent pour le vainqueur */
-    color: #000000; /* Texte noir pour le contraste */
+    background-color: rgba(255, 215, 0, 0.7);
+    color: #000000;
     font-weight: bold;
-    border: 2px solid #ffd700; /* Bordure dorée pour le vainqueur */
+    border: 2px solid var(--subway-yellow);
     margin-bottom: 10px;
   }
   

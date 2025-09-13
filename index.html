@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>les jeux du bureau</title>
+    <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <!-- Ajouter les scripts Firebase -->
@@ -23,18 +24,31 @@
         // Initialiser Firebase
         firebase.initializeApp(firebaseConfig);
     </script>
+    <!-- Prefetch des images des mini-jeux pour fluidifier la navigation -->
+    <link rel="prefetch" as="image" href="images/ImageJeu1.png">
+    <link rel="prefetch" as="image" href="images/ImageJeu2.png">
+    <link rel="prefetch" as="image" href="images/imageJeu3.jpg">
+    <link rel="prefetch" as="image" href="images/imageJeu4.jpg">
+    <link rel="prefetch" as="image" href="images/imageJeu5.jpg">
+    <link rel="prefetch" as="image" href="images/imageJeu6.jpg">
+    <link rel="prefetch" as="image" href="images/sub.svg">
+    <link rel="prefetch" as="image" href="jeuVélo/Images/Bike.png">
+    <link rel="prefetch" as="image" href="jeuVélo/Images/Ballon.png">
+    <link rel="prefetch" as="image" href="jeuVélo/Images/Skateboard.png">
+    <link rel="prefetch" as="image" href="jeuVélo/Images/Scooter.png">
 </head>
 <body>
     <div class="app-container">
         <h1 id="bienvenue">Les Jeux du Bureau</h1>
         <form id="start-form">
             <select id="existing-players" class="centered-element">
-                <option value="">Choisissez un pseudo ou créez-en un nouveau</option>
+                <option value="">Sélectionner votre profil</option>
                 <!-- Les options seront générées par JavaScript -->
             </select>
-            <button type="button" id="create-pseudo-btn" class="center-button">Créer un nouveau pseudo</button>
             <input type="text" id="new-player" placeholder="Entrez un nouveau pseudo (max 20)" maxlength="20" class="centered-element" style="display: none;"/>
             <button type="submit" class="center-button">Commencer</button>
+            <p class="profile-hint centered-element">Pas encore de profil ? <span class="arrow">↓</span></p>
+            <button type="button" id="create-pseudo-btn" class="center-button">Créer votre profil</button>
         </form>
     </div>
     <script src="script.js"></script>
