@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard LOG Events</title>
+  <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+  <script src="firebase-init.js"></script>
+  <script src="games.config.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dash-header">
+      <h1>Dashboard LOG Events</h1>
+      <div class="header-actions">
+        <button id="refreshBtn" class="btn">Rafraîchir</button>
+        <a class="btn" href="choixDuJeu.html">Retour</a>
+      </div>
+    </header>
+
+    <section class="cards-grid" id="kpi-cards">
+      <!-- Rempli par JS -->
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2>Top 3 jeux (volume)</h2>
+        <ol id="topGames" class="top-list"></ol>
+      </div>
+      <div class="card">
+        <h2>Détails rapides</h2>
+        <ul class="quick-list" id="quickDetails"></ul>
+      </div>
+    </section>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

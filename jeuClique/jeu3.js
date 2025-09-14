@@ -27,11 +27,13 @@ function startGame() {
     document.getElementById('timer').textContent = timeLeft;
     document.getElementById('clickArea');
     timerInterval = setInterval(updateTimer, 1000);
+    try { if (window.SUBStats) window.SUBStats.logEvent({ eventType: 'game_start', sessionId: sessionStorage.getItem('sessionId'), gameId: sessionStorage.getItem('gameId'), userId: playerName }); } catch(e) {}
 }
 
 function incrementScore() {
     score++;
     document.getElementById('score').textContent = score;
+    try { if (window.SUBStats) window.SUBStats.logEvent({ eventType: 'click', eventDetails: 'clickArea', actionsCount: 1 }); } catch(e) {}
 }
 
 function updateTimer() {
@@ -49,6 +51,7 @@ function endGame() {
     alert(`Jeu terminé ! Votre score est : ${score}`);
     // Stats: cumul des clics
     try { if (window.SUBStats) window.SUBStats.addClicks(playerName, score); } catch(e) {}
+    try { if (window.SUBStats) window.SUBStats.logEvent({ eventType: 'game_end', score: score, completionFlag: true }); } catch(e) {}
     // Ajoutez ici la logique pour enregistrer le score dans Firebase si nécessaire
             // Ajoutez ici la logique pour vérifier et mettre à jour le meilleur score
             updateBestScoreIfNecessary();
