@@ -59,3 +59,8 @@ body, html {
 .quick-list li { padding: 4px 0; }
 
 @media (max-width: 720px) { .cards-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); } }
+
+/* Suggestions list */
+.suggestions-list { max-height: 360px; overflow: auto; margin: 0; padding-left: 16px; }
+.suggestions-list li { padding: 10px 4px; border-top: 1px solid rgba(0,0,0,0.08); }
+.suggestion-meta { color: #6b7280; font-size: 0.9em; }

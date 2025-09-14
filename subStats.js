@@ -36,9 +36,13 @@
     };
 
     var html = ''
-      + '<table id="table" border="1">'
+      + '<table id="table" class="leaderboard-table">'
+      + '<colgroup>'
+      + '<col style="width:50%" />'
+      + '<col style="width:30%" />'
+      + '<col style="width:20%" />'
+      + '</colgroup>'
       + '<thead>'
-      + '<tr><th colspan="3">SUB\'Stats</th></tr>'
       + '<tr><th>Description</th><th>Joueur</th><th>Valeur</th></tr>'
       + '</thead>'
       + '<tbody>'

@@ -17,7 +17,7 @@
   <div id="playerInfo">
     Pseudo: <span id="playerNameDisplay">sans pseudo</span>
 </div>
-<div id="chatContainer">
+<div id="chatContainer" class="hidden">
   <div id="chatBox">
       <ul id="chatMessages"></ul>
   </div>
@@ -30,10 +30,28 @@
         <div class="grid-actions">
           <a class="btn" href="hallOfFame/hallOfFame.html">Hall of Fame</a>
           <a class="btn" href="subStats.html">SUB'Stats</a>
+          <button type="button" id="suggestion-btn" class="btn">Suggestion</button>
         </div>
     </div>
 
     <script src="statsUtil.js"></script>
     <script src="choixDuJeu.js"></script>
+    <script>
+      window.ChatWidgetConfig = { label: "SUB'Chat", title: "SUB'Chat", accent: 'var(--subway-green)' };
+    </script>
+    <script src="chat-widget.js" defer></script>
+
+    <!-- Modal Suggestion -->
+    <div id="suggestionModal" class="modal hidden" aria-hidden="true" role="dialog" aria-labelledby="suggestionTitle">
+      <div class="modal-dialog">
+        <h3 id="suggestionTitle">AVIS & SUGGESTIONS</h3>
+        <p>Avez-vous des suggestions ? Idée de jeu, bug, etc.</p>
+        <textarea id="suggestionText" placeholder="Votre avis ou suggestion..." maxlength="500"></textarea>
+        <div class="modal-actions">
+          <button id="suggestionCancel" class="btn" type="button">Annuler</button>
+          <button id="suggestionSubmit" class="btn" type="button">Envoyer</button>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

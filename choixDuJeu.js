@@ -58,3 +58,60 @@ messagesRef.on('child_added', (data) => {
   chatMessages.appendChild(li);
   scrollToBottom();
 });
+
+// Suggestions — bouton + modal + envoi Firebase
+(function initSuggestions(){
+  try {
+    var btn = document.getElementById('suggestion-btn');
+    if (!btn) return;
+
+    function ensureModal(){
+      var modal = document.getElementById('suggestionModal');
+      if (modal) return modal;
+      // Crée le modal si absent (au cas où le HTML est injecté après)
+      var wrapper = document.createElement('div');
+      wrapper.innerHTML = '\n<div id="suggestionModal" class="modal hidden" aria-hidden="true" role="dialog" aria-labelledby="suggestionTitle">\n  <div class="modal-dialog">\n    <h3 id="suggestionTitle">Suggestions des utilisateurs</h3>\n    <p>Avez-vous des suggestions ? Idée de jeu, bug, etc.</p>\n    <textarea id="suggestionText" placeholder="vos avis ou suggestions..." maxlength="500"></textarea>\n    <div class="modal-actions">\n      <button id="suggestionCancel" class="btn" type="button">Annuler</button>\n      <button id="suggestionSubmit" class="btn" type="button">Envoyer</button>\n    </div>\n  </div>\n</div>';
+      document.body.appendChild(wrapper.firstChild);
+      return document.getElementById('suggestionModal');
+    }
+
+    function bindModalHandlers(){
+      var modal = ensureModal();
+      var txt = document.getElementById('suggestionText');
+      var cancel = document.getElementById('suggestionCancel');
+      var submit = document.getElementById('suggestionSubmit');
+      if (!modal || !txt || !cancel || !submit) return;
+
+      function openModal(){ modal.classList.remove('hidden'); modal.setAttribute('aria-hidden','false'); setTimeout(function(){ txt.focus(); }, 50); }
+      function closeModal(){ modal.classList.add('hidden'); modal.setAttribute('aria-hidden','true'); }
+
+      // Evite le double-binding si on réappelle bind
+      if (!modal._bound) {
+        cancel.addEventListener('click', closeModal);
+        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+        submit.addEventListener('click', function(){
+          var text = (txt.value || '').trim();
+          if (!text) { alert('Merci de saisir une suggestion.'); return; }
+          try {
+            var entry = {
+              text: text,
+              player: playerName || 'Anonyme',
+              ts: firebase.database.ServerValue.TIMESTAMP,
+              page: 'choixDuJeu'
+            };
+            firebase.database().ref('/suggestions').push(entry)
+              .then(function(){ txt.value = ''; closeModal(); alert('Merci pour votre suggestion !'); })
+              .catch(function(){ alert('Une erreur est survenue. Réessayez plus tard.'); });
+          } catch (e) { alert('Sauvegarde indisponible pour le moment.'); }
+        });
+        modal._bound = true;
+      }
+      return openModal;
+    }
+
+    btn.addEventListener('click', function(){
+      var open = bindModalHandlers();
+      if (typeof open === 'function') open();
+    });
+  } catch (_) {}
+})();

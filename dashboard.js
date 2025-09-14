@@ -5,7 +5,8 @@
     cards: document.getElementById('kpi-cards'),
     topGames: document.getElementById('topGames'),
     quick: document.getElementById('quickDetails'),
-    refreshBtn: document.getElementById('refreshBtn')
+    refreshBtn: document.getElementById('refreshBtn'),
+    suggestionsList: document.getElementById('suggestionsList')
   };
 
   if (!ui.cards) return;
@@ -156,4 +157,31 @@
 
   ui.refreshBtn && ui.refreshBtn.addEventListener('click', loadAndRender);
   loadAndRender();
+
+  // Suggestions feed
+  function esc(s){
+    return String(s || '').replace(/[&<>"']/g, function(c){
+      switch(c){
+        case '&': return '&amp;';
+        case '<': return '&lt;';
+        case '>': return '&gt;';
+        case '"': return '&quot;';
+        case "'": return '&#39;';
+        default: return c;
+      }
+    });
+  }
+  function fmtDate(ts){ var n = num(ts); if (!n || !isFinite(n)) return '-'; var d = new Date(n); try { return d.toLocaleString('fr-FR'); } catch(_) { return d.toISOString(); } }
+  if (ui.suggestionsList) {
+    db.ref('/suggestions').limitToLast(200).on('value', function(snap){
+      var val = snap.val() || {};
+      var arr = Object.values(val).sort(function(a,b){ return num(b.ts) - num(a.ts); });
+      ui.suggestionsList.innerHTML = arr.map(function(it){
+        return '<li>' +
+          '<div class="suggestion-meta"><strong>' + esc(it.player || 'Anonyme') + '</strong> — ' + fmtDate(it.ts) + '</div>' +
+          '<div>' + esc(it.text || '') + '</div>' +
+        '</li>';
+      }).join('');
+    });
+  }
 })();

@@ -6,10 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let originalPoints = [];
     let placedPoints = [];
     const numberOfPoints = 5;
-    const pointRadius = 10; // Rayon logique pour calculs/texte
-    const pointThreshold = 20; // Seuil de distance pour considérer un point bien placé
-    const displayTime = 5000; // 3 secondes
-    const gameTime = 5000; // 5 secondes
+    const pointRadius = 10; // Rayon logique pour calculs/texte (affichage fallback)
+    // Nouveau système: fenêtre de points élargie à 20px et score proportionnel
+    const pointThreshold = 20; // Rayon (px) dans lequel on gagne des points
+    const displayTime = 5000; // 5 secondes
+    const gameTime = 10000; // 10 secondes
     const playerNameDisplay = document.getElementById('playerNameDisplay');
     const playerName = sessionStorage.getItem('playerName') || 'Sans pseudo';
     playerNameDisplay.textContent = playerName;
@@ -147,15 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function calculateScore() {
         let score = 0;
         placedPoints.forEach(placedPoint => {
-            let closestPoint = findClosestOriginalPoint(placedPoint);
-            let distance = calculateDistance(placedPoint, closestPoint);
-    
-            if (distance <= pointThreshold) {
-                // Score proportionnel à la distance : plus le point est proche, plus le score est élevé
-                score += Math.max(0, 10 - distance);
-            }
+            const closestPoint = findClosestOriginalPoint(placedPoint);
+            const distance = calculateDistance(placedPoint, closestPoint);
+            // Score linéaire: 20 pts si parfait, 0 à 20px
+            const pointScore = Math.max(0, pointThreshold - distance);
+            score += pointScore;
         });
-        return score;
+        // On peut arrondir au besoin; on garde un entier
+        return Math.round(score);
     }
     
     function findClosestOriginalPoint(placedPoint) {
@@ -210,11 +210,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     
     function displayPointScore(placedPoint) {
-        let closestPoint = findClosestOriginalPoint(placedPoint);
-        let distance = calculateDistance(placedPoint, closestPoint);
-        let pointScore = Math.max(0, 10 - distance);
+        const closestPoint = findClosestOriginalPoint(placedPoint);
+        const distance = calculateDistance(placedPoint, closestPoint);
+        // Affiche le score local pour ce clic avec la nouvelle règle (max 20)
+        const pointScore = Math.max(0, pointThreshold - distance);
         const offset = iconReady() ? ICON_SIZE / 2 : pointRadius;
-        ctx.fillText(pointScore.toFixed(0), placedPoint.x + offset, placedPoint.y + offset);
+        ctx.fillStyle = '#111';
+        ctx.font = 'bold 14px Inter, Arial, sans-serif';
+        ctx.fillText(Math.round(pointScore).toString(), placedPoint.x + offset, placedPoint.y + offset);
     }
     
 
