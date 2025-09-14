@@ -186,6 +186,7 @@ button:hover {
     border: 2px solid var(--subway-green);
     font-size: 1rem;
     background: #fff;
+    box-sizing: border-box; /* évite le dépassement dû aux bordures/padding */
 }
 
 .cta {

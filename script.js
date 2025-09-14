@@ -19,7 +19,7 @@ function loadPseudos() {
 
     pseudosRef.once('value', function(snapshot) {
         var pseudos = snapshot.val() || {};
-        existingPlayersSelect.innerHTML = '<option value="" disabled selected>🎮 Sélectionner votre profil</option>';
+        existingPlayersSelect.innerHTML = '<option value="" disabled selected>Sélectionner votre profil</option>';
         Object.keys(pseudos).forEach(function(pseudo) {
             var option = document.createElement('option');
             option.value = option.textContent = pseudo; // Ici, nous utilisons pseudo comme valeur et texte
