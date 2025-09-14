@@ -164,3 +164,25 @@ input, select, textarea {
 }
 .leaderboard-table th:last-child,
 .leaderboard-table td:last-child { text-align: right; }
+
+/* Boss row highlight (Hall of Fame total) */
+.leaderboard-table tbody tr.boss-row td {
+  background: linear-gradient(90deg, rgba(255,215,0,0.92), rgba(255,235,59,0.92));
+  color: #111;
+  font-weight: 900;
+}
+
+/* Global app frame border so every page matches */
+.app-container,
+.games-container,
+.details-container {
+  border: 4px solid var(--subway-yellow);
+  border-radius: var(--radius-md);
+}
+
+/* Apply the yellow frame to all game containers as well */
+[id$="Container"],
+[id$="container"],
+.appcontainer {
+  border: 4px solid var(--subway-yellow);
+}

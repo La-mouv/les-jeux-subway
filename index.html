@@ -26,17 +26,23 @@
 </head>
 <body>
     <div class="app-container">
-        <h1 id="bienvenue">Les Jeux du Bureau</h1>
-        <form id="start-form">
-            <select id="existing-players" class="centered-element">
-                <option value="">Sélectionner votre profil</option>
-                <!-- Les options seront générées par JavaScript -->
-            </select>
-            <input type="text" id="new-player" placeholder="Entrez un nouveau pseudo (max 20)" maxlength="20" class="centered-element" style="display: none;"/>
-            <button type="submit" class="center-button">Commencer</button>
-            <p class="profile-hint centered-element">Pas encore de profil ? <span class="arrow">↓</span></p>
-            <button type="button" id="create-pseudo-btn" class="center-button">Créer votre profil</button>
-        </form>
+        <h1 class="title">Les Jeux du Bureau 🏆</h1>
+        <p class="tagline">🎯 Jouez, cumulez, devenez la légende du bureau !</p>
+
+        <div class="card">
+            <form id="start-form" class="start-form">
+                <select id="existing-players" class="dropdown">
+                    <option value="">Sélectionner votre profil</option>
+                    <!-- Options injectées par JavaScript -->
+                </select>
+                <button type="submit" class="cta">Commencer</button>
+                <p class="profile-text">
+                    Pas encore de profil ?<br>
+                    <button type="button" id="create-pseudo-btn" class="linklike">Créer votre profil</button>
+                </p>
+                <input type="text" id="new-player" placeholder="Entrez un nouveau pseudo (max 20)" maxlength="20" class="dropdown" style="display:none;" />
+            </form>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

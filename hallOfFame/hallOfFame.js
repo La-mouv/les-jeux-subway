@@ -24,7 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // Écoute tous les changements de score pour rafraîchir le tableau
   firebase.database().ref('/scores').on('value', (snapshot) => {
     const all = snapshot.val() || {};
-    const rows = games.map(({ key, label }) => {
+    // Ligne de cumul: meilleur total tous jeux confondus
+    const cumulative = bestCumulative(all, games.map(g => g.key));
+    const rowsCumul = `<tr class="boss-row">
+                <td><strong>👑 SUB'Combo Total Winner</strong></td>
+                <td><strong>${cumulative.player}</strong></td>
+                <td><strong>${formatScore(cumulative.score)}</strong></td>
+              </tr>`;
+
+    const rowsGames = games.map(({ key, label }) => {
       const best = bestForGame(all, key);
       return `<tr>
                 <td>${label}</td>
@@ -32,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${formatScore(best.score)}</td>
               </tr>`;
     }).join('');
-    tbody.innerHTML = rows;
+    tbody.innerHTML = rowsCumul + rowsGames;
   });
 });
 
@@ -44,6 +52,23 @@ function bestForGame(allScores, gameKey) {
     const val = typeof raw === 'number' ? raw : parseFloat(raw) || 0;
     if (val > bestScore) {
       bestScore = val;
+      bestPlayer = player;
+    }
+  }
+  return { player: bestPlayer, score: bestScore };
+}
+
+function bestCumulative(allScores, gameKeys) {
+  let bestPlayer = '-';
+  let bestScore = 0;
+  for (const [player, scores] of Object.entries(allScores)) {
+    let sum = 0;
+    for (const k of gameKeys) {
+      const raw = scores && scores[k];
+      sum += (typeof raw === 'number') ? raw : (parseFloat(raw) || 0);
+    }
+    if (sum > bestScore) {
+      bestScore = sum;
       bestPlayer = player;
     }
   }

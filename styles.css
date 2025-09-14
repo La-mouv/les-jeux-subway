@@ -24,7 +24,6 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative; /* pour positionner le titre en haut */
 }
 
 #player-name {
@@ -60,14 +59,9 @@ button:hover {
 #bienvenue {
     font-family: var(--font-display);
     color: var(--subway-green);
-    font-size: 3em; /* légèrement réduit pour tenir sur une ligne */
-    margin-bottom: 30px;
+    font-size: 3em;
+    margin: 0 0 8px 0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-    position: absolute;
-    top: 12px; /* plus haut */
-    left: 50%;
-    transform: translateX(-50%);
-    white-space: nowrap; /* empêcher le retour à la ligne */
 }
 
 .center-button {
@@ -108,3 +102,123 @@ button:hover {
     margin: 28px auto 8px; /* plus d'espace au-dessus du texte */
 }
 .profile-hint .arrow { font-size: 1.2em; margin-left: 6px; }
+
+/* Accroche sous le titre d'accueil */
+.tagline {
+    font-size: 1.2em;
+    font-weight: 700;
+    color: var(--subway-deep);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid var(--subway-yellow);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    margin: 6px auto 16px;
+    box-shadow: var(--shadow-sm);
+    max-width: 520px;
+}
+
+/* Groupes/sections pour lisibilité */
+.section {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.group-header { margin-top: 6px; }
+.group-select { padding-top: 14px; border-top: 2px solid rgba(0,0,0,0.08); }
+.group-create { padding-top: 14px; border-top: 2px solid rgba(0,0,0,0.08); }
+
+/* ==== Nouvelle page d'accueil inspirée du mock ==== */
+.homepage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:
+      linear-gradient(rgba(0, 153, 67, 0.55), rgba(255, 194, 14, 0.50)),
+      url('images/ImageEcranAccueil.jpg') center/cover no-repeat;
+}
+
+.overlay {
+    text-align: center;
+    color: #ffffff;
+    padding: 10px;
+}
+
+.title {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--subway-green);
+    text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+    margin: 0 0 10px 0;
+}
+
+/* Redéfinit .tagline ici pour la home */
+.tagline {
+    background: var(--subway-yellow);
+    color: var(--subway-green);
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-bottom: 48px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.card {
+    background: rgba(255,255,255,0.92);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.30);
+    display: inline-block;
+    min-width: 320px;
+}
+
+.dropdown {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid var(--subway-green);
+    font-size: 1rem;
+    background: #fff;
+}
+
+.cta {
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--subway-green);
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+.cta:hover {
+    background: var(--subway-yellow);
+    color: var(--subway-deep);
+    transform: translateY(-3px);
+}
+
+.profile-text {
+    color: var(--subway-deep);
+    font-weight: 600;
+    margin: 10px 0 0 0;
+}
+.profile-text .linklike {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--subway-green);
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    box-shadow: none;
+}
