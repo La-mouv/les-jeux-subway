@@ -130,3 +130,50 @@ function addKeypress(player, count) {
 // Export globals (attach to window for safety)
 window.SUBStats = { logSessionStart, addClicks, addKeypress, logEvent };
 
+// Auto fit-to-screen for game containers (keeps 720x720 base, scales down on small screens)
+// Applies to first matching container among: #gameContainer, #game2container, #jeu3container, #jeuContainer
+// Override base size with data-base-width/height if present on the container
+(function setupAutoFitToScreen() {
+  function findContainer() {
+    return document.querySelector('#gameContainer, #game2container, #jeu3container, #jeuContainer');
+  }
+
+  function getBaseSize(el) {
+    const bw = Number(el?.dataset?.baseWidth) || 720;
+    const bh = Number(el?.dataset?.baseHeight) || 720;
+    return { bw, bh };
+  }
+
+  function fit() {
+    const el = findContainer();
+    if (!el) return;
+    if (el.dataset.fitScreen === 'false') return; // opt-out hook if needed
+    const { bw, bh } = getBaseSize(el);
+    const margin = 24; // small safety margin against viewport chrome
+    const scale = Math.min(
+      Math.max(0.1, (window.innerWidth - margin) / bw),
+      Math.max(0.1, (window.innerHeight - margin) / bh),
+      1
+    );
+    el.style.transformOrigin = 'center center';
+    el.style.transform = 'scale(' + scale + ')';
+  }
+
+  function init() {
+    // Only run on pages that actually have a matching container
+    if (!findContainer()) return;
+    try {
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } catch (_) {}
+    window.addEventListener('resize', fit);
+    window.addEventListener('orientationchange', fit);
+    fit();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
