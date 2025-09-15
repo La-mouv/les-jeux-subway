@@ -22,18 +22,55 @@
       </div>
     </header>
 
+    <section class="card filters">
+      <h2>Périodes</h2>
+      <div class="filters-row">
+        <div class="filter-block">
+          <label for="periodStartA">Période A (pour jour/jour, funnel, moyenne)</label>
+          <div class="inputs">
+            <input type="date" id="periodStartA" />
+            <span>→</span>
+            <input type="date" id="periodEndA" />
+          </div>
+        </div>
+        <div class="filter-block">
+          <label for="periodStartB">Période B (pour Top 3)</label>
+          <div class="inputs">
+            <input type="date" id="periodStartB" />
+            <span>→</span>
+            <input type="date" id="periodEndB" />
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button id="applyPeriodBtn" class="btn">Appliquer</button>
+        </div>
+      </div>
+    </section>
+
     <section class="cards-grid" id="kpi-cards">
       <!-- Rempli par JS -->
     </section>
 
     <section class="grid-2">
       <div class="card">
-        <h2>Top 3 jeux (volume)</h2>
-        <ol id="topGames" class="top-list"></ol>
+        <h2>Joueurs uniques (période A)</h2>
+        <ul id="uniquePerDay" class="quick-list"></ul>
       </div>
       <div class="card">
-        <h2>Détails rapides</h2>
-        <ul class="quick-list" id="quickDetails"></ul>
+        <h2>Parties lancées (période A)</h2>
+        <ul id="sessionsPerDay" class="quick-list"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Funnel de rétention (période A)</h2>
+      <div id="retentionFunnel" class="funnel"></div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2 id="topGamesTitle">Top 3 jeux (volume)</h2>
+        <ol id="topGames" class="top-list"></ol>
       </div>
     </section>
 

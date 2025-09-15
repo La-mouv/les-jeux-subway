@@ -19,6 +19,18 @@ body, html {
 
 .header-actions { display: flex; gap: 10px; }
 
+/* Filters */
+.filters { margin-top: 10px; }
+.filters-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+.filter-block label { display: block; font-weight: 700; margin-bottom: 6px; }
+.filter-block .inputs { display: flex; align-items: center; gap: 8px; }
+.filter-actions { align-self: flex-end; }
+
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -64,3 +76,15 @@ body, html {
 .suggestions-list { max-height: 360px; overflow: auto; margin: 0; padding-left: 16px; }
 .suggestions-list li { padding: 10px 4px; border-top: 1px solid rgba(0,0,0,0.08); }
 .suggestion-meta { color: #6b7280; font-size: 0.9em; }
+
+/* Funnel */
+.funnel { display: flex; gap: 12px; flex-wrap: wrap; }
+.funnel .step {
+  background: rgba(255,255,255,0.94);
+  border-radius: var(--radius-sm, 8px);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,0.06));
+  padding: 8px 10px;
+  min-width: 120px;
+}
+.funnel .step .title { font-weight: 700; color: #111827; }
+.funnel .step .sub { color: #6b7280; font-size: 0.9em; }

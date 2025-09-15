@@ -4,31 +4,51 @@
   var ui = {
     cards: document.getElementById('kpi-cards'),
     topGames: document.getElementById('topGames'),
-    quick: document.getElementById('quickDetails'),
+    topGamesTitle: document.getElementById('topGamesTitle'),
     refreshBtn: document.getElementById('refreshBtn'),
-    suggestionsList: document.getElementById('suggestionsList')
+    suggestionsList: document.getElementById('suggestionsList'),
+    // filters
+    periodStartA: document.getElementById('periodStartA'),
+    periodEndA: document.getElementById('periodEndA'),
+    periodStartB: document.getElementById('periodStartB'),
+    periodEndB: document.getElementById('periodEndB'),
+    applyPeriodBtn: document.getElementById('applyPeriodBtn'),
+    // period outputs
+    uniquePerDay: document.getElementById('uniquePerDay'),
+    sessionsPerDay: document.getElementById('sessionsPerDay'),
+    retentionFunnel: document.getElementById('retentionFunnel')
   };
 
   if (!ui.cards) return;
 
   // Chargement et périmètre d'analyse
-  var LIMIT_SESSIONS = 1200;   // sessions pour calculs (rétention, actifs, top jeux)
+  var LIMIT_SESSIONS = 2000;   // sessions pour calculs (rétention, actifs, top jeux)
   var MAX_SESSIONS_FOR_EVENTS = 400; // sessions pour durée moyenne (événements)
+  var LIVE_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 
   function num(v){ return typeof v === 'number' ? v : parseFloat(v) || 0; }
   function fmtPct(n){ return isFinite(n) ? (n*100).toFixed(1) + '%' : '-'; }
   function dayKey(ts){ var d = new Date(num(ts)); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
   function humanDuration(ms){ if (!ms || !isFinite(ms) || ms < 0) return '0:00'; var s = Math.round(ms/1000); var m = Math.floor(s/60); var r = s%60; return m+':'+String(r).padStart(2,'0'); }
+  function toISODate(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+  function prettyDay(dk){ try { var p = dk.split('-'); return (p[2]+'/'+p[1]); } catch(_) { return dk; } }
+  function startOfDayTs(iso){ var p = iso.split('-').map(Number); return new Date(p[0], p[1]-1, p[2], 0,0,0,0).getTime(); }
+  function endOfDayTs(iso){ var p = iso.split('-').map(Number); return new Date(p[0], p[1]-1, p[2], 23,59,59,999).getTime(); }
+  function within(ts, startIso, endIso){ var t = num(ts); return t >= startOfDayTs(startIso) && t <= endOfDayTs(endIso); }
+  function daysBetween(startIso, endIso){
+    var out = []; var p1 = startIso.split('-').map(Number); var p2 = endIso.split('-').map(Number);
+    var cur = new Date(p1[0], p1[1]-1, p1[2]); var end = new Date(p2[0], p2[1]-1, p2[2]);
+    while (cur.getTime() <= end.getTime()) { out.push(toISODate(cur)); cur.setDate(cur.getDate()+1); }
+    return out;
+  }
 
   function renderCards(kpis){
     var cards = [
-      { label: 'Total joueurs', value: kpis.totalPlayersAllTime },
-      { label: 'Actifs (aujourd\'hui)', value: kpis.activeToday },
-      { label: 'Rétention J+1', value: fmtPct(kpis.retention1d) },
-      { label: 'Rétention J+7', value: fmtPct(kpis.retention7d) },
-      { label: 'Rétention J+30', value: fmtPct(kpis.retention30d) },
+      { label: 'Joueurs en live (5 min)', value: kpis.livePlayers != null ? kpis.livePlayers : '...' },
+      { label: 'Moy. parties / joueur (A)', value: isFinite(kpis.avgSessionsPerPlayerPeriodA) ? (kpis.avgSessionsPerPlayerPeriodA||0).toFixed(2) : '...' },
       { label: 'Durée moyenne session', value: kpis.avgSessionDurReadable },
-      { label: 'Moy. parties / joueur', value: (kpis.avgSessionsPerPlayer||0).toFixed(2) }
+      { label: 'Total joueurs', value: kpis.totalPlayersAllTime },
+      { label: 'Actifs (aujourd\'hui)', value: kpis.activeToday }
     ];
     ui.cards.innerHTML = cards.map(function(c){
       return '<div class="metric"><div class="label">' + c.label + '</div>' +
@@ -47,76 +67,145 @@
     ui.topGames.innerHTML = list.map(function(it){ return '<li>' + gameTitle(it.game) + ' — ' + it.count + '</li>'; }).join('');
   }
 
-  function renderQuick(details){
-    ui.quick.innerHTML = [
-      'Fenêtre: dernières ' + details.sessionWindow + ' sessions',
-      'Sessions considérées pour durée: ' + details.eventsWindow + ' dernières'
-    ].map(function(t){ return '<li>' + t + '</li>'; }).join('');
+  // Retention J+1/J+7/J+30 retirées des KPI; funnel conservé.
+
+  var STATE = {
+    sessions: {},
+    sessionIdsSorted: [],
+    mapDayToPlayers: {},
+    mapDayToSessionCount: {},
+    allPlayersSet: new Set(),
+    yearHint: (new Date()).getFullYear()
+  };
+
+  function buildIndices(sessions){
+    var ids = Object.keys(sessions);
+    ids.sort(function(a,b){ return num(sessions[a].ts) - num(sessions[b].ts); });
+    STATE.sessions = sessions;
+    STATE.sessionIdsSorted = ids;
+    STATE.mapDayToPlayers = {};
+    STATE.mapDayToSessionCount = {};
+    STATE.allPlayersSet = new Set();
+    ids.forEach(function(id){
+      var s = sessions[id] || {};
+      var dk = dayKey(s.ts || Date.now());
+      var p = s.player || 'Anonyme';
+      (STATE.mapDayToPlayers[dk] = STATE.mapDayToPlayers[dk] || new Set()).add(p);
+      STATE.mapDayToSessionCount[dk] = (STATE.mapDayToSessionCount[dk] || 0) + 1;
+      STATE.allPlayersSet.add(p);
+    });
+    if (ids.length) {
+      var last = sessions[ids[ids.length-1]];
+      var d = new Date(num(last.ts));
+      if (!isNaN(d.getTime())) STATE.yearHint = d.getFullYear();
+    }
   }
 
-  function computeRetention(todaySet, pastSet){
-    var denom = pastSet.size || 0; if (!denom) return 0;
-    var inter = 0; pastSet.forEach(function(p){ if (todaySet.has(p)) inter++; });
-    return inter / denom;
+  function computeAvgSessionsPerPlayerInRange(startIso, endIso){
+    var unique = new Set(); var count = 0;
+    STATE.sessionIdsSorted.forEach(function(id){
+      var s = STATE.sessions[id];
+      if (within(s.ts, startIso, endIso)) { unique.add(s.player || 'Anonyme'); count++; }
+    });
+    return unique.size ? (count/unique.size) : 0;
+  }
+
+  function computeTopGamesInRange(startIso, endIso){
+    var byGame = {};
+    STATE.sessionIdsSorted.forEach(function(id){
+      var s = STATE.sessions[id] || {};
+      if (!within(s.ts, startIso, endIso)) return;
+      var g = s.game || 'unknown';
+      byGame[g] = (byGame[g] || 0) + 1;
+    });
+    return Object.entries(byGame).map(function(e){ return { game: e[0], count: e[1] }; })
+      .sort(function(a,b){ return b.count - a.count; })
+      .slice(0,3);
+  }
+
+  function computeLivePlayersApprox(){
+    var now = Date.now(); var set = new Set();
+    STATE.sessionIdsSorted.forEach(function(id){
+      var s = STATE.sessions[id];
+      if (num(s.ts) >= (now - LIVE_WINDOW_MS)) set.add(s.player || 'Anonyme');
+    });
+    return set.size;
+  }
+
+  function renderPeriodA(startIso, endIso){
+    // per-day uniques and sessions
+    var days = daysBetween(startIso, endIso);
+    var uniquesLis = [];
+    var sessionsLis = [];
+    days.forEach(function(iso){
+      var players = STATE.mapDayToPlayers[iso] || new Set();
+      uniquesLis.push('<li>'+prettyDay(iso)+': <strong>'+players.size+'</strong></li>');
+      var sc = STATE.mapDayToSessionCount[iso] || 0;
+      sessionsLis.push('<li>'+prettyDay(iso)+': <strong>'+sc+'</strong></li>');
+    });
+    if (ui.uniquePerDay) ui.uniquePerDay.innerHTML = uniquesLis.join('');
+    if (ui.sessionsPerDay) ui.sessionsPerDay.innerHTML = sessionsLis.join('');
+
+    // retention funnel: base = day 0
+    var baseIso = days[0];
+    var baseSet = STATE.mapDayToPlayers[baseIso] || new Set();
+    var funnelHtml = [];
+    days.forEach(function(iso, idx){
+      var cur = STATE.mapDayToPlayers[iso] || new Set();
+      var inter = 0; if (baseSet.size){ baseSet.forEach(function(p){ if (cur.has(p)) inter++; }); }
+      var pct = baseSet.size ? (inter/baseSet.size) : 0;
+      funnelHtml.push('<div class="step"><div class="title">'+prettyDay(iso)+'</div><div class="sub">'+inter+' / '+baseSet.size+' ('+fmtPct(pct)+')'+'</div></div>');
+    });
+    if (ui.retentionFunnel) ui.retentionFunnel.innerHTML = funnelHtml.join('');
+
+    // average sessions per player in A
+    var avgA = computeAvgSessionsPerPlayerInRange(startIso, endIso);
+    return avgA;
   }
 
   function loadAndRender(){
     renderCards({ totalPlayersAllTime: '...', activeToday: '...' });
     renderTopGames([]);
-    renderQuick({ sessionWindow: LIMIT_SESSIONS, eventsWindow: MAX_SESSIONS_FOR_EVENTS });
+    // quick details supprimé
 
-    // 1) Total joueurs (tous temps) via /stats/players
     var p1 = db.ref('/stats/players').once('value').then(function(s){
       var v = s.val() || {}; return Object.keys(v).length;
     });
-
-    // 2) Sessions récentes
     var p2 = db.ref('/events/sessions').limitToLast(LIMIT_SESSIONS).once('value').then(function(snap){ return snap.val() || {}; });
 
     Promise.all([p1, p2]).then(function(res){
       var totalPlayersAllTime = res[0];
       var sessions = res[1];
-      var ids = Object.keys(sessions);
-      ids.sort(function(a,b){ return num(sessions[a].ts) - num(sessions[b].ts); });
+      buildIndices(sessions);
 
-      // Actifs par jour, top jeux, moy. parties / joueur
-      var mapDayToPlayers = {}; // dayKey -> Set(players)
+      // Defaults for periods (fill inputs if empty)
+      var y = STATE.yearHint;
+      function setIfEmpty(el, val){ if (el && !el.value) el.value = val; }
+      setIfEmpty(ui.periodStartA, y+'-09-15');
+      setIfEmpty(ui.periodEndA,   y+'-09-19');
+      setIfEmpty(ui.periodStartB, y+'-09-15');
+      setIfEmpty(ui.periodEndB,   y+'-09-29');
+
+      // Actifs today
       var todayKey = dayKey(Date.now());
-      var uniquePlayers = new Set();
-      var sessionsPerPlayer = {}; // player -> count
-      var byGame = {}; // game -> count
+      var activeToday = (STATE.mapDayToPlayers[todayKey] || new Set()).size;
 
-      ids.forEach(function(id){
-        var s = sessions[id] || {};
-        var dk = dayKey(s.ts || Date.now());
-        var p = s.player || 'Anonyme';
-        var g = s.game || 'unknown';
-        (mapDayToPlayers[dk] = mapDayToPlayers[dk] || new Set()).add(p);
-        uniquePlayers.add(p);
-        sessionsPerPlayer[p] = (sessionsPerPlayer[p] || 0) + 1;
-        byGame[g] = (byGame[g] || 0) + 1;
-      });
+      // Period A computations
+      var startA = ui.periodStartA ? ui.periodStartA.value : (y+'-09-15');
+      var endA   = ui.periodEndA ? ui.periodEndA.value   : (y+'-09-19');
+      var avgA = renderPeriodA(startA, endA);
 
-      var activeToday = (mapDayToPlayers[todayKey] || new Set()).size;
+      // Top games for Period B
+      var startB = ui.periodStartB ? ui.periodStartB.value : (y+'-09-15');
+      var endB   = ui.periodEndB ? ui.periodEndB.value   : (y+'-09-29');
+      var topGamesArr = computeTopGamesInRange(startB, endB);
+      if (ui.topGamesTitle) ui.topGamesTitle.textContent = 'Top 3 jeux (volume — ' + prettyDay(startB) + '→' + prettyDay(endB) + ')';
 
-      function playersAt(offsetDays){
-        var t = new Date();
-        t.setDate(t.getDate() - offsetDays);
-        return mapDayToPlayers[dayKey(t.getTime())] || new Set();
-      }
+      // Approx live players
+      var livePlayers = computeLivePlayersApprox();
 
-      var retention1d = computeRetention(mapDayToPlayers[todayKey] || new Set(), playersAt(1));
-      var retention7d = computeRetention(mapDayToPlayers[todayKey] || new Set(), playersAt(7));
-      var retention30d = computeRetention(mapDayToPlayers[todayKey] || new Set(), playersAt(30));
-
-      var totalSessions = ids.length;
-      var avgSessionsPerPlayer = uniquePlayers.size ? (totalSessions / uniquePlayers.size) : 0;
-
-      var topGamesArr = Object.entries(byGame).map(function(e){ return { game: e[0], count: e[1] }; })
-        .sort(function(a,b){ return b.count - a.count; })
-        .slice(0,3);
-
-      // 3) Durée moyenne d\'une session (échantillon)
+      // Average session duration (sample)
+      var ids = STATE.sessionIdsSorted;
       var lastForEvents = ids.slice(-MAX_SESSIONS_FOR_EVENTS);
       var promises = lastForEvents.map(function(id){
         return db.ref('/events/' + id).limitToLast(300).once('value').then(function(s){ return { id: id, events: s.val() || {} }; });
@@ -139,24 +228,27 @@
         });
         var avgMs = durations.length ? (durations.reduce(function(a,b){ return a + b; }, 0) / durations.length) : 0;
 
-        // Rendu final
         renderCards({
           totalPlayersAllTime: totalPlayersAllTime,
           activeToday: activeToday,
-          retention1d: retention1d,
-          retention7d: retention7d,
-          retention30d: retention30d,
           avgSessionDurReadable: humanDuration(avgMs),
-          avgSessionsPerPlayer: avgSessionsPerPlayer
+          avgSessionsPerPlayerPeriodA: avgA,
+          livePlayers: livePlayers
         });
         renderTopGames(topGamesArr);
-        renderQuick({ sessionWindow: LIMIT_SESSIONS, eventsWindow: MAX_SESSIONS_FOR_EVENTS });
+        // quick details supprimé
       });
     }).catch(function(err){ console.error('Dashboard load error', err); });
   }
 
   ui.refreshBtn && ui.refreshBtn.addEventListener('click', loadAndRender);
   loadAndRender();
+
+  // Apply period filters
+  ui.applyPeriodBtn && ui.applyPeriodBtn.addEventListener('click', function(){
+    // Recalculer l'ensemble des métriques avec les nouvelles périodes
+    loadAndRender();
+  });
 
   // Suggestions feed
   function esc(s){
