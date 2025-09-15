@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const playerName = sessionStorage.getItem('playerName') || 'Sans pseudo';
     playerNameDisplay.textContent = playerName;
     const allWords = [
-        "Teriyaki", "Tikka", "Thon", "BMT", "Brooklyn", "Chipotle", "Southwest", "Meatball", "Sandwich", "Artists", "Footlong", "Fresh", "Cookies Lovers", "Six-inch", "Veggie", "Bacon", "Ranch", "Sweet Onion", "Parmesan", "Jalapen", "Tomates", "Brownie", "BBQ", "1965", "Connecticut", "Peter Buck", "Fred", "Subway", "Fred DeLuca", "Sub Like Me", "Steak & Cheese", "Pastrami", "Bridgeport", "sous-marin", "Pete's Super Submarine", "Convention 2025", "Puy du Fou", "GP Explorer" ];    
+  "Teriyaki", "Tikka", "Thon", "BMT", "Brooklyn", "Chipotle", "Southwest", "Meatball", "Sandwich", "Artists", "Footlong", "Fresh", "Cookies Lovers", "SUB15", "SUB30", "Veggie", "Bacon", "Ranch", "Sweet Onion", "Parmesan", "Jalapeno", "Tomate", "Brownie", "BBQ", "1965", "Connecticut", "Peter Buck", "Subway", "Fred DeLuca", "Sub Like Me", "Steak & Cheese", "Pastrami", "sous-marin", "Convention 2025", "Puy du Fou", "GP Explorer" ];    
     let words = [];
     let currentWordIndex = 0;
     let score = 0;

@@ -119,12 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Gestionnaire de clic pour le gameContainer
+    // Ne termine la partie que lorsque les feux sont éteints (gameStarted = true).
+    // Les clics avant le départ sont ignorés.
     gameContainer.addEventListener('click', () => {
-        if (gameStarted) {
-            gameOver();
-        } else {
-            alert('Trop tôt ! Game over.');
-            gameOver();
-        }
+        if (!gameStarted) return; // Ignorer les clics avant l'extinction des feux
+        gameOver();
     });
 });
